@@ -168,7 +168,7 @@ function! InitializeMappings()
     " find all occurrences of custom pattern in all files
     map <leader>/c :noautocmd <Bar> vimgrep//gj ** <Bar> cw<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
     " find all occurrences of custom pattern in all files using external grep
-    call ExecUnixWin('map <leader>/g :enew <Bar> :r !grep -r "" ' . getcwd() . ' <Home>' . repeat("<Right>", 20), '')
+    call ExecUnixWin('map <leader>/g :exe(":enew <Bar> :r !grep -r \"\" " . getcwd()) <Home>' . repeat("<Right>", 27), '')
 
     " custom search across all buffers
     map <leader>/b :bufdo il! //<Left>
