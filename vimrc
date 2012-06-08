@@ -199,7 +199,7 @@ function! InitializeMappings()
     " ##### PLUGIN MAPPINGS
     map <leader>nt :NERDTreeToggle<CR>
 
-    map <leader>mr :MRU<CR>
+    map <leader>mr :exe( (getreg('%') == '__MRU_Files__') ? ':q' : ':MRU' )<CR>
 
     map <leader>lj :LustyJuggler<CR>
 
@@ -328,6 +328,9 @@ function! InitializePlugins()
     "     - usage:
     "     <leader>mr
     "     :MRU {pattern}
+    let g:MRU_Max_Entries = 1000
+    let g:MRU_Window_Height = 15
+    let g:MRU_Add_Menu = 0
 
     " LustyJuggler -> Switch very quickly among your active buffers
     "     http://www.vim.org/scripts/script.php?script_id=2050
