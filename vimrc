@@ -287,6 +287,7 @@ function! InitializePlugins()
     Bundle 'majutsushi/tagbar'
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
+    "Bundle 'vim-scripts/dbext.vim'  # TODO
     "Bundle 'tpope/vim-fugitive'  # TODO
     "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  # TODO
     "Bundle 'scrooloose/syntastic'  # TODO
@@ -294,7 +295,7 @@ function! InitializePlugins()
     " language specific plugins
     Bundle 'vim-scripts/pythoncomplete'
     Bundle 'vim-scripts/rubycomplete.vim'
-    "Bundle 'tpope/vim-rails.git'  # TODO
+    Bundle 'tpope/vim-rails'
 
     filetype plugin indent on
 
