@@ -127,11 +127,14 @@ function! InitializeMappings()
     vmap j gj
     vmap k gk
 
-    " delete last character from system buffer
-    map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
+    " write to a file using sudo
+    map <leader>ww :w !sudo tee % > /dev/null<CR>
 
     " delete current buffer
     map <leader>bd :bd<CR>
+
+    " delete last character from system buffer
+    map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
 
     " toggle spell checking
     map <leader>sp :setlocal spell!<CR>
@@ -198,6 +201,7 @@ function! InitializeMappings()
 
     " ##### PLUGIN MAPPINGS
     map <leader>nt :NERDTreeToggle<CR>
+    map <leader>nc :NERDTree .<CR>
 
     map <leader>mr :exe( (getreg('%') == '__MRU_Files__') ? ':q' : ':MRU' )<CR>
 
@@ -321,6 +325,7 @@ function! InitializePlugins()
     "     http://www.vim.org/scripts/script.php?script_id=1658
     "     - usage:
     "     <leader>nt
+    "     <leader>nc
     "     :NERDTree d:\
 
     " MRU -> Plugin to manage Most Recently Used (MRU) files
@@ -345,9 +350,15 @@ function! InitializePlugins()
 
     " Command-T -> Fast file navigation for VIM
     "     http://www.vim.org/scripts/script.php?script_id=3025
+    "     - install (when placed in bundle):
+    "     (use ruby 1.8.7)
+    "     cd ~/.vim/bundle/command-t
+    "     bundle install
+    "     rake make
     "     - usage:
     "     <leader>tt
     "     :CommandTFlush
+    let g:CommandTAlwaysShowDotFiles = 1
 
     " NERDCommenter -> easy commenting of code for many filetypes
     "     http://www.vim.org/scripts/script.php?script_id=1218
