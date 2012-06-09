@@ -184,6 +184,8 @@ function! InitializeMappings()
     "autocmd Syntax * syn keyword myTodo TODO FIXME XXX NOTE BUG HACK TODEL contained
     "autocmd Syntax * syn match myComment "#.*" contains=myTodo
     "autocmd Syntax * hi def link myTodo Todo
+    "http://stackoverflow.com/questions/4097259/in-vim-how-do-i-highlight-todo-and-fixme
+    "http://stackoverflow.com/questions/8423228/custom-keyword-highlighted-as-todo-in-vi
 
     " <C-Space> does the omnicomplete
     inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
@@ -252,11 +254,13 @@ function! InitializePlugins()
     " TagBar -> Source code browser
     " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
     " Rainbow -> colors nasted parentheses
+    " project.tar.gz : Organize/Navigate projects of files (like IDE/buffer explorer)
     "
     " Language Specific:
     " ------------------
     " pythoncomplete : Python Omni Completion
-    " rubycomplete.vim : ruby omni-completion 
+    " rubycomplete.vim : ruby omni-completion
+    " rails.vim : Ruby on Rails: easy file navigation, enhanced syntax highlighting, and more
 
     " Vundle -> Vim plugin manager
     "     https://github.com/gmarik/vundle
@@ -275,6 +279,8 @@ function! InitializePlugins()
 
     " color scheme
     Bundle 'vim-scripts/Wombat'
+    " screen saver TODO
+    "Bundle 'vim-scripts/matrix.vim--Yang'  # TODO
 
     " vundle settings for all other plugins
     Bundle 'scrooloose/nerdtree'
@@ -287,15 +293,19 @@ function! InitializePlugins()
     Bundle 'majutsushi/tagbar'
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
-    "Bundle 'vim-scripts/dbext.vim'  # TODO
+    Bundle 'vim-scripts/project.tar.gz'
+    " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
     "Bundle 'tpope/vim-fugitive'  # TODO
-    "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  # TODO
     "Bundle 'scrooloose/syntastic'  # TODO
+    "Bundle 'vim-scripts/dbext.vim'  # TODO
+    "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  # TODO
 
     " language specific plugins
     Bundle 'vim-scripts/pythoncomplete'
     Bundle 'vim-scripts/rubycomplete.vim'
     Bundle 'tpope/vim-rails'
+    "http://www.vim.org/scripts/script.php?script_id=386 py matchit  # TODO
+    "http://www.vim.org/scripts/script.php?script_id=290 rb matchit  # TODO
 
     filetype plugin indent on
 
@@ -395,6 +405,11 @@ function! InitializePlugins()
     "     https://github.com/ikusalic/vim-rainbow
     "     - usage:
     "     <leader>rb
+    "
+    " project.tar.gz : Organize/Navigate projects of files (like IDE/buffer explorer)
+    "     http://www.vim.org/scripts/script.php?script_id=69
+    "     - usage:
+    "     TODO
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
@@ -434,9 +449,14 @@ function! InitializePlugins()
 
     " Ruby:
     " -----
-    " rubycomplete.vim : ruby omni-completion 
+    " rubycomplete.vim : ruby omni-completion
     "     http://www.vim.org/scripts/script.php?script_id=1662
     "     - usage: automatic
+    "
+    " rails.vim : Ruby on Rails: easy file navigation, enhanced syntax highlighting, and more
+    "     http://www.vim.org/scripts/script.php?script_id=1567
+    "     - usage:
+    "     TODO
 endfunction
 
 
