@@ -214,7 +214,7 @@ function! InitializeMappings()
     map <leader>tt :CommandT<CR>
 
     nmap <leader>cc :call NERDComment(0, "toggle")<CR>
-    vmap <leader>cc <ESC>:call NERDComment(1, "toggle")<CR>
+    vmap <leader>cc :call NERDComment(1, "toggle")<CR>
 
     map <leader>gd :GundoToggle<CR>
 
@@ -244,6 +244,7 @@ function! InitializePlugins()
     " --------
     " Vundle -> Vim plugin manager
     " Wombat -> Dark gray color scheme
+    " matrix.vim : Matrix screensaver for VIM
     " NERDTree -> Filesystem explorer
     " MRU -> Plugin to manage Most Recently Used (MRU) files
     " LustyJuggler -> Switch very quickly among your active buffers
@@ -279,8 +280,8 @@ function! InitializePlugins()
 
     " color scheme
     Bundle 'vim-scripts/Wombat'
-    " screen saver TODO
-    "Bundle 'vim-scripts/matrix.vim--Yang'  # TODO
+    " screen saver
+    Bundle 'vim-scripts/matrix.vim--Yang'
 
     " vundle settings for all other plugins
     Bundle 'scrooloose/nerdtree'
@@ -331,6 +332,12 @@ function! InitializePlugins()
         " Todos should be bluish
         hi Todo guibg=#4000ff
     endif
+
+    " matrix.vim : Matrix screensaver for VIM
+    "     http://www.vim.org/scripts/script.php?script_id=1189
+    "     - usage:
+    "     TODO
+    "TODO 
 
     " NERDTree -> Filesystem explorer
     "     http://www.vim.org/scripts/script.php?script_id=1658
