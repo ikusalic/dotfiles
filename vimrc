@@ -236,6 +236,15 @@ function! InitializeLanguageSpecificSettings()
 
     " Python
     autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+    " JavaScript
+    autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+
+    " HTML
+    autocmd FileType html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+
+    " CSS
+    autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 endfunction
 
 " plugins
@@ -255,7 +264,6 @@ function! InitializePlugins()
     " TagBar -> Source code browser
     " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
     " Rainbow -> colors nasted parentheses
-    " project.tar.gz : Organize/Navigate projects of files (like IDE/buffer explorer)
     "
     " Language Specific:
     " ------------------
@@ -294,7 +302,6 @@ function! InitializePlugins()
     Bundle 'majutsushi/tagbar'
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
-    Bundle 'vim-scripts/project.tar.gz'
     " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
     "Bundle 'tpope/vim-fugitive'  # TODO
     "Bundle 'scrooloose/syntastic'  # TODO
@@ -412,11 +419,6 @@ function! InitializePlugins()
     "     https://github.com/ikusalic/vim-rainbow
     "     - usage:
     "     <leader>rb
-    "
-    " project.tar.gz : Organize/Navigate projects of files (like IDE/buffer explorer)
-    "     http://www.vim.org/scripts/script.php?script_id=69
-    "     - usage:
-    "     TODO
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
