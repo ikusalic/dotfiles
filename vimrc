@@ -209,7 +209,7 @@ function! InitializeMappings()
 
     map <leader>lj :LustyJuggler<CR>
 
-    map <leader>be :BufExplorer<CR>
+    map <leader>be :exe( (getreg('%') == '[BufExplorer]') ? ':norm q' : ':BufExplorer' )<CR>
 
     map <leader>tt :CommandT<CR>
 
@@ -223,6 +223,8 @@ function! InitializeMappings()
     call ExecUnixWin('', "map <leader>ct :ConqueTerm bash<CR>")
 
     map <leader>rb :RainbowParenthesesToggle<CR>
+
+    " TODO session
 endfunction
 
 " custom language specific settings
@@ -264,6 +266,7 @@ function! InitializePlugins()
     " TagBar -> Source code browser
     " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
     " Rainbow -> colors nasted parentheses
+    " session.vim : Extended session management for Vim
     "
     " Language Specific:
     " ------------------
@@ -302,6 +305,7 @@ function! InitializePlugins()
     Bundle 'majutsushi/tagbar'
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
+    Bundle 'xolox/vim-session'
     " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
     "Bundle 'tpope/vim-fugitive'  # TODO
     "Bundle 'scrooloose/syntastic'  # TODO
@@ -419,6 +423,11 @@ function! InitializePlugins()
     "     https://github.com/ikusalic/vim-rainbow
     "     - usage:
     "     <leader>rb
+
+    " session.vim : Extended session management for Vim
+    "     http://www.vim.org/scripts/script.php?script_id=3150
+    "     - usage:
+    "     TODO
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
