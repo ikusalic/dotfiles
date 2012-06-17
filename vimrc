@@ -224,7 +224,10 @@ function! InitializeMappings()
 
     map <leader>rb :RainbowParenthesesToggle<CR>
 
-    " TODO session
+    map <leader>so :OpenSession<Space>
+    map <leader>ss :SaveSession<Space>
+    map <leader>sd :DeleteSession<Space>
+    map <leader>sc :CloseSession<CR>
 endfunction
 
 " custom language specific settings
@@ -427,7 +430,11 @@ function! InitializePlugins()
     " session.vim : Extended session management for Vim
     "     http://www.vim.org/scripts/script.php?script_id=3150
     "     - usage:
-    "     TODO
+    "     <leader>so
+    "     <leader>ss
+    "     <leader>sd
+    "     <leader>sc
+    let g:session_autoload = 'no'
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
