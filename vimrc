@@ -247,7 +247,7 @@ function! InitializeLanguageSpecificSettings()
     autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
     " HTML
-    autocmd FileType html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+    autocmd FileType xhtml,html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
     " CSS
     autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
