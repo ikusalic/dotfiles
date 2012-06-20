@@ -205,7 +205,7 @@ function! InitializeMappings()
     map <leader>nt :NERDTreeToggle<CR>
     map <leader>nc :NERDTree .<CR>
 
-    map <leader>mr :exe( (getreg('%') == '__MRU_Files__') ? ':q' : ':MRU' )<CR>
+    map <leader>mr :exe( (getreg('%') =~ '__MRU_Files__') ? ':q' : ':MRU' )<CR>
 
     map <leader>lj :LustyJuggler<CR>
 
@@ -224,10 +224,11 @@ function! InitializeMappings()
 
     map <leader>rb :RainbowParenthesesToggle<CR>
 
-    map <leader>so :OpenSession<Space>
-    map <leader>ss :SaveSession<Space>
-    map <leader>sd :DeleteSession<Space>
-    map <leader>sc :CloseSession<CR>
+    " TODO
+    "map <leader>so :OpenSession<Space>
+    "map <leader>ss :SaveSession<Space>
+    "map <leader>sd :DeleteSession<Space>
+    "map <leader>sc :CloseSession<CR>
 endfunction
 
 " custom language specific settings
@@ -268,7 +269,6 @@ function! InitializePlugins()
     " TagBar -> Source code browser
     " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
     " Rainbow -> colors nasted parentheses
-    " session.vim : Extended session management for Vim
     "
     " Language Specific:
     " ------------------
@@ -307,7 +307,8 @@ function! InitializePlugins()
     Bundle 'majutsushi/tagbar'
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
-    Bundle 'xolox/vim-session'
+    "Bundle 'TODO'  TODO sessions
+
     " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
     "Bundle 'tpope/vim-fugitive'  # TODO
     "Bundle 'scrooloose/syntastic'  # TODO
@@ -419,15 +420,6 @@ function! InitializePlugins()
     "     https://github.com/ikusalic/vim-rainbow
     "     - usage:
     "     <leader>rb
-
-    " session.vim : Extended session management for Vim
-    "     http://www.vim.org/scripts/script.php?script_id=3150
-    "     - usage:
-    "     <leader>so
-    "     <leader>ss
-    "     <leader>sd
-    "     <leader>sc
-    let g:session_autoload = 'no'
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
