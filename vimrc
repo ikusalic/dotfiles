@@ -154,6 +154,9 @@ function! InitializeMappings()
     " save and run current file
     map <leader>go :w<CR>:!"%"<CR>
 
+    " toggle relative/absolute line numbers
+    map <leader>nu :exe( (&rnu == 1) ? 'set nu' : 'set rnu' )<CR>
+
     " toggle highlighting of current column
     map <leader>hc :setlocal cursorcolumn!<CR>
 
