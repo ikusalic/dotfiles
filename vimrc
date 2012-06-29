@@ -494,7 +494,7 @@ set lazyredraw
 set guioptions=egrL
 
 set ruler
-set number
+set relativenumber
 set title
 set cmdheight=2
 set visualbell
