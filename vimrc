@@ -244,6 +244,10 @@ function! InitializeMappings()
 
     map <leader>rb :RainbowParenthesesToggle<CR>
 
+    map <leader>mt :Mark<CR>
+    map <leader>mm :Mark 
+    map <leader>mc :MarkClear<CR>
+
     " TODO
     "map <leader>so :OpenSession<Space>
     "map <leader>ss :SaveSession<Space>
@@ -289,6 +293,7 @@ function! InitializePlugins()
     " TagBar -> Source code browser
     " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
     " Rainbow -> colors nasted parentheses
+    " Mark : Highlight several words in different colors simultaneously
     "
     " Language Specific:
     " ------------------
@@ -327,6 +332,7 @@ function! InitializePlugins()
     Bundle 'majutsushi/tagbar'
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
+    Bundle 'vim-scripts/Mark--Karkat'
     "Bundle 'TODO'  TODO sessions
 
     " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
@@ -440,6 +446,13 @@ function! InitializePlugins()
     "     https://github.com/ikusalic/vim-rainbow
     "     - usage:
     "     <leader>rb
+
+    " Mark : Highlight several words in different colors simultaneously
+    "     http://www.vim.org/scripts/script.php?script_id=2666
+    "     - usage:
+    "     <leader>mt
+    "     <leader>mp
+    "     <leader>mc
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
