@@ -247,6 +247,9 @@ function! InitializeMappings()
     map <leader>mt :Mark<CR>
     map <leader>mm :Mark 
     map <leader>mc :MarkClear<CR>
+    map <leader>mn :<C-u>call mark#SearchCurrentMark(0)<CR>
+    map <leader>mN :<C-u>call mark#SearchCurrentMark(1)<CR>
+
 
     " TODO
     "map <leader>so :OpenSession<Space>
@@ -451,8 +454,10 @@ function! InitializePlugins()
     "     http://www.vim.org/scripts/script.php?script_id=2666
     "     - usage:
     "     <leader>mt
-    "     <leader>mp
+    "     <leader>mm
     "     <leader>mc
+    "     <leader>mn
+    "     <leader>mN
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
