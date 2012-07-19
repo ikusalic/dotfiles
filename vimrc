@@ -82,6 +82,17 @@ endif
 " MY FUNCTIONS
 " ======================================================================
 
+" more intelligent zero behaviour
+function! MyZeroBehaviour()
+    let first_nonblank = match(getline('.'), '\S') + 1
+    let current = col('.')
+    if current == 1 || first_nonblank < current
+        call cursor(line('.'), first_nonblank)
+    else
+        call cursor(line('.'), 1)
+    endif
+endfunction
+
 " execute command while preserving position
 function! PreservePosition(cmd)
     let [s, c] = [@/, getpos('.')]
@@ -126,6 +137,9 @@ function! InitializeMappings()
     nmap k gk
     vmap j gj
     vmap k gk
+
+    " remap 0 to behave as ^ iff after first non-whitespace character
+    nmap 0 :call MyZeroBehaviour()<CR>
 
     " write to a file using sudo
     map <leader>ww :w !sudo tee % > /dev/null<CR>
