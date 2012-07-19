@@ -138,7 +138,7 @@ function! InitializeMappings()
     vmap j gj
     vmap k gk
 
-    " remap 0 to behave as ^ iff after first non-whitespace character
+    " remap 0 to behave more intelligently
     nmap 0 :call MyZeroBehaviour()<CR>
 
     " write to a file using sudo
@@ -158,6 +158,9 @@ function! InitializeMappings()
 
     " toggle show unprintable characters
     nmap <leader>li :set list!<CR>
+
+    " substitution shortcut
+    map <leader>ss :%s//gc<left><left><left>
 
     " cd to directory of current file
     map <leader>cd :cd %:p:h<CR>
