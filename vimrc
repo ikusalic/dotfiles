@@ -141,6 +141,14 @@ function! InitializeMappings()
     " remap 0 to behave more intelligently
     nmap 0 :call MyZeroBehaviour()<CR>
 
+    " <C-Space> does the omnicomplete
+    inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
+    \ "\<lt>C-n>" :
+    \ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
+    \ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
+    \ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
+    imap <C-@> <C-Space>
+
     " write to a file using sudo
     map <leader>ww :w !sudo tee % > /dev/null<CR>
 
@@ -184,12 +192,8 @@ function! InitializeMappings()
     " halve the number of whitespaces at the beginning of each line
     nnoremap <leader><LT> :call PreservePosition('%s/\(^\s*\)\1/\1/')<CR>
 
-    " find all occurrences of previous search in all files
-    map <leader>// :noautocmd <Bar> exe ('vimgrep/' . @/ . '/gj **') <Bar> cw<CR>
-    " find all occurrences of current word in all files
-    map <leader>/w :noautocmd <Bar> exe ('vimgrep/' . expand('<cword>') . '/gj **') <Bar> cw<CR>
     " find all occurrences of custom pattern in all files
-    map <leader>/c :noautocmd <Bar> vimgrep//gj ** <Bar> cw<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+    map <leader>/v :noautocmd <Bar> vimgrep//gj ** <Bar> cw<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
     " find all occurrences of custom pattern in all files using external grep
     call ExecUnixWin('map <leader>/g :exe(":enew <Bar> :r !grep -r \"\" " . getcwd()) <Home>' . repeat("<Right>", 27), '')
 
@@ -206,14 +210,6 @@ function! InitializeMappings()
     "autocmd Syntax * hi def link myTodo Todo
     "http://stackoverflow.com/questions/4097259/in-vim-how-do-i-highlight-todo-and-fixme
     "http://stackoverflow.com/questions/8423228/custom-keyword-highlighted-as-todo-in-vi
-
-    " <C-Space> does the omnicomplete
-    inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
-    \ "\<lt>C-n>" :
-    \ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
-    \ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
-    \ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
-    imap <C-@> <C-Space>
 
     " format xml, *nix only
     call ExecUnixWin("map <leader>fx :%!xmllint --format -<CR>", '')
@@ -249,13 +245,6 @@ function! InitializeMappings()
     map <leader>mc :MarkClear<CR>
     map <leader>mn :<C-u>call mark#SearchCurrentMark(0)<CR>
     map <leader>mN :<C-u>call mark#SearchCurrentMark(1)<CR>
-
-
-    " TODO
-    "map <leader>so :OpenSession<Space>
-    "map <leader>ss :SaveSession<Space>
-    "map <leader>sd :DeleteSession<Space>
-    "map <leader>sc :CloseSession<CR>
 endfunction
 
 " custom language specific settings
