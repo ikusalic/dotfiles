@@ -179,6 +179,9 @@ function! InitializeMappings()
     " save and run current file
     map <leader>go :w<CR>:!"%"<CR>
 
+    " full screen
+    map <leader>fs :set lines=999 <BAR> set columns=999<CR>
+
     " toggle relative/absolute line numbers
     map <leader>nu :exe( (&rnu == 1) ? 'set nu' : 'set rnu' )<CR>
 
@@ -568,6 +571,8 @@ set completeopt=menuone,longest,preview
 " ======================================================================
 " MY AUTO COMMANDS
 " ======================================================================
+
+" TODO disable the capslock when leaving insert mode
 
 " set custom mappings only
 autocmd VimEnter * call InitializeMappings()
