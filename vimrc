@@ -93,6 +93,14 @@ function! MyZeroBehaviour()
     endif
 endfunction
 
+" delete '\<' and '\>' from search buffer if they are at the beginning and end
+function! CleanupSearchRegister()
+    let s_reg = getreg('/')
+    if( strpart(s_reg, 0, 2) == '\<' && strpart(s_reg, strlen(s_reg) - 2, 2) == '\>' )
+        call setreg( '/', strpart(s_reg, 2, (strlen(s_reg) - 4)) )
+    endif
+endfunction
+
 " execute command while preserving position
 function! PreservePosition(cmd)
     let [s, c] = [@/, getpos('.')]
@@ -157,6 +165,9 @@ function! InitializeMappings()
 
     " delete last character from system buffer
     map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
+
+    " delete '\<' and '\>' from search buffer if they are at the beginning and end
+    map <leader>// :call CleanupSearchRegister()<CR>
 
     " toggle spell checking
     map <leader>sp :setlocal spell!<CR>
