@@ -198,12 +198,12 @@ function! InitializeMappings()
     " find all occurrences of custom pattern in all files
     map <leader>/v :noautocmd <Bar> vimgrep//gj ** <Bar> cw<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
     " find all occurrences of custom pattern in all files using external grep
-    call ExecUnixWin('map <leader>/g :exe(":enew <Bar> :r !grep -r \"\" " . getcwd()) <Home>' . repeat("<Right>", 27), '')
+    call ExecUnixWin('map <leader>/g :exe(":enew <Bar> :r !grep -r -n \"\" " . getcwd()) <Home>' . repeat("<Right>", 30), '')
 
     " custom search across all buffers
     map <leader>/b :bufdo il! //<Left>
     " custom substitution across all buffers
-    map <leader>bs :bufdo %s//gce<Left><Left><Left><Left>
+    map <leader>sb :bufdo %s//gce<Left><Left><Left><Left>
 
     " list some tags I like to use -> small TaskList
     map <leader>tg :il! /TODO\\|FIXME\\|XXX\\|NOTE\\|BUG\\|HACK\\|TODEL/<CR>
