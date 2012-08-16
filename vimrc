@@ -274,6 +274,7 @@ function! InitializeLanguageSpecificSettings()
     autocmd FileType python set omnifunc=pythoncomplete#Complete
 
     " JavaScript
+    " TODO TODEL Crockford uses 4 spaces
     autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
     " HTML
@@ -339,11 +340,12 @@ function! InitializePlugins()
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
     Bundle 'vim-scripts/Mark--Karkat'
-    "Bundle 'TODO'  TODO sessions
+    "Bundle 'scrooloose/syntastic'  # TODO
 
+    "Bundle 'TODO'  TODO sessions
+    "
     " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
     "Bundle 'tpope/vim-fugitive'  # TODO
-    "Bundle 'scrooloose/syntastic'  # TODO
     "Bundle 'vim-scripts/dbext.vim'  # TODO
     "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  # TODO
 
@@ -351,6 +353,7 @@ function! InitializePlugins()
     Bundle 'vim-scripts/pythoncomplete'
     Bundle 'vim-scripts/rubycomplete.vim'
     Bundle 'tpope/vim-rails'
+    " TODO ropevim
     "http://www.vim.org/scripts/script.php?script_id=386 py matchit  # TODO
     "http://www.vim.org/scripts/script.php?script_id=290 rb matchit  # TODO
 
@@ -461,6 +464,10 @@ function! InitializePlugins()
     "     <leader>mc
     "     <leader>mn
     "     <leader>mN
+    highlight def MarkWord7  ctermbg=DarkCyan    ctermfg=Black guibg=#00AF87 guifg=Black
+    highlight def MarkWord8  ctermbg=DarkMagenta ctermfg=Black guibg=#00AF00 guifg=Black
+    highlight def MarkWord9  ctermbg=DarkGreen   ctermfg=Black guibg=#878700 guifg=Black
+    highlight def MarkWord10 ctermbg=DarkRed     ctermfg=Black guibg=#AF875F guifg=Black
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
