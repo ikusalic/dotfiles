@@ -133,6 +133,9 @@ function! InitializeMappings()
     " Y should behave like C and D (yank to the end of line)
     map Y y$
 
+    " do not overwrite default register if replacing in visual mode
+    vnoremap <silent> p p<ESC>:call setreg('*', getreg('0'))<CR>
+
     " <C-L> should clear highlights
     nnoremap <C-L> :nohl<CR><C-L>
 
