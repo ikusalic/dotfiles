@@ -163,8 +163,8 @@ function! InitializeMappings()
     " write to a file using sudo
     map <leader>ww :w !sudo tee % > /dev/null<CR>
 
-    " delete current buffer
-    map <leader>bd :bd<CR>
+    " wipeout current buffer
+    map <leader>bw :bw<CR>
 
     " delete last character from system buffer
     map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
@@ -258,10 +258,14 @@ function! InitializeMappings()
     map <leader>rb :RainbowParenthesesToggle<CR>
 
     map <leader>mt :Mark<CR>
-    map <leader>mm :Mark 
+    map <leader>mm :Mark
     map <leader>mc :MarkClear<CR>
     map <leader>mn :<C-u>call mark#SearchCurrentMark(0)<CR>
     map <leader>mN :<C-u>call mark#SearchCurrentMark(1)<CR>
+
+    " TODO resize window
+    map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1) <BAR> resize 25<CR>
+    map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1) <BAR> resize 25<CR>
 endfunction
 
 " custom language specific settings
@@ -275,10 +279,6 @@ function! InitializeLanguageSpecificSettings()
 
     " Python
     autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-    " JavaScript
-    " TODO TODEL Crockford uses 4 spaces
-    autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
     " HTML
     autocmd FileType xhtml,html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
@@ -313,7 +313,7 @@ function! InitializePlugins()
 
     " Vundle -> Vim plugin manager
     "     https://github.com/gmarik/vundle
-    "     - install:
+    "     - NOTE install:
     "     (i.) git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     "     (ii.) :BundleInstall
     "     - usage:
@@ -343,19 +343,25 @@ function! InitializePlugins()
     Bundle 'vim-scripts/Conque-Shell'
     Bundle 'ikusalic/vim-rainbow'
     Bundle 'vim-scripts/Mark--Karkat'
-    "Bundle 'scrooloose/syntastic'  # TODO
+    Bundle 'tpope/vim-fugitive'
+    Bundle 'vim-scripts/LargeFile'
+    Bundle 'scrooloose/syntastic'
+    "Bundle 'garbas/vim-snipmate'  # TODO
+    "Bundle 'scrooloose/snipmate-snippets'  # TODO
+
 
     "Bundle 'TODO'  TODO sessions
-    "
+
     " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
-    "Bundle 'tpope/vim-fugitive'  # TODO
     "Bundle 'vim-scripts/dbext.vim'  # TODO
     "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  # TODO
 
     " language specific plugins
-    Bundle 'vim-scripts/pythoncomplete'
     Bundle 'vim-scripts/rubycomplete.vim'
     Bundle 'tpope/vim-rails'
+    Bundle 'vim-scripts/pythoncomplete'
+    Bundle 'fs111/pydoc.vim'
+
     " TODO ropevim
     "http://www.vim.org/scripts/script.php?script_id=386 py matchit  # TODO
     "http://www.vim.org/scripts/script.php?script_id=290 rb matchit  # TODO
@@ -414,7 +420,7 @@ function! InitializePlugins()
 
     " Command-T -> Fast file navigation for VIM
     "     http://www.vim.org/scripts/script.php?script_id=3025
-    "     - install (when placed in bundle):
+    "     - NOTE install (when placed in bundle):
     "     (use ruby 1.8.7)
     "     cd ~/.vim/bundle/command-t
     "     bundle install
@@ -438,7 +444,7 @@ function! InitializePlugins()
 
     " TagBar -> Source code browser
     "     http://www.vim.org/scripts/script.php?script_id=3465
-    "     - Exuberant Ctags must be installed
+    "     - NOTE Exuberant Ctags must be installed
     "         - http://ctags.sourceforge.net/
     "         - http://adamyoung.net/Exuberant-Ctags-OS-X
     "     - usage:
@@ -459,7 +465,7 @@ function! InitializePlugins()
     "     - usage:
     "     <leader>rb
 
-    " Mark : Highlight several words in different colors simultaneously
+    " Mark -> Highlight several words in different colors simultaneously
     "     http://www.vim.org/scripts/script.php?script_id=2666
     "     - usage:
     "     <leader>mt
@@ -472,6 +478,24 @@ function! InitializePlugins()
     highlight def MarkWord9  ctermbg=DarkGreen   ctermfg=Black guibg=#878700 guifg=Black
     highlight def MarkWord10 ctermbg=DarkRed     ctermfg=Black guibg=#AF875F guifg=Black
 
+    " fugitive.vim - Git wrapper
+    "     https://github.com/tpope/vim-fugitive
+    "     - usage:
+    "     TODO
+
+    " LargeFile : Edit large files quickly (keywords: large huge speed)
+    "     http://www.vim.org/scripts/script.php?script_id=1506
+    "     - usage: automatic
+    let g:LargeFile = 5
+
+    " Syntastic -> runs files through external syntax checkers
+    "     https://github.com/scrooloose/syntastic
+    "     - NOTE: installs for different languages (must be on path):
+    "             - python: flake8 python package
+    "     - usage: automatic
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_python_checker_args='--ignore=E501'
+
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
     " Python:
@@ -480,33 +504,12 @@ function! InitializePlugins()
     "     http://www.vim.org/scripts/script.php?script_id=1542
     "     - usage: automatic
     "
-    " TODO
     " Pydoc -> Opens up pydoc within vim
     "     http://www.vim.org/scripts/script.php?script_id=910
     "     - usage:
     "     <leader>p{wW}
     "     :Pydoc {smt}
-    "
-    " PyFlakes -> Underlines and displays errors with Python on-the-fly
-    "     http://www.vim.org/scripts/script.php?script_id=2441
-    "     koristena verzija: https://github.com/mitechie/pyflakes-pathogen
-    "     - usage:
-    "     <leader>pf
-    "     :cc
-    "
-    " pep8 -> Check your python source files with PEP8
-    "     http://www.vim.org/scripts/script.php?script_id=2914
-    "     treba i: https://github.com/jcrocholl/pep8
-    "     - usage:
-    "     <leader>p8
-    " Configure Pydoc
-    "let g:pydoc_cmd = "C:/Python26/Lib/pydoc.py"
-    "let g:pydoc_wh = 999
-    " Configure PyFlakes
-    "map <leader>pf :PyflakesUpdate<CR>
-    "let g:pyflakes_use_quickfix = 0
-    " Configure pep8
-    "let g:pep8_map='<leader>p8'
+    call ExecUnixWin("", 'let g:pydoc_cmd = "C:/Python26/Lib/pydoc.py"')  " NOTE
 
     " Ruby:
     " -----
@@ -581,9 +584,9 @@ set foldmethod=indent
 set foldlevel=99
 
 set nolist
-set listchars=tab:>-,trail:.,eol:$
+set listchars=tab:>-,trail:.,eol:$,nbsp:.
 
-set guifont=Lucida_Console:h15
+set guifont=Lucida_Console:h15,Monaco:h15
 set guicursor=a:blinkon0
 
 set completeopt=menuone,longest,preview
