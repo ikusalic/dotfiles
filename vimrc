@@ -494,7 +494,8 @@ function! InitializePlugins()
     "             - python: flake8 python package
     "     - usage: automatic
     let g:syntastic_auto_loc_list = 1
-    let g:syntastic_python_checker_args='--ignore=E501'
+    " ignore too long lines and continuation line misidentation
+    let g:syntastic_python_checker_args='--ignore=E128,E501'
 
     " LANGUAGE SPECIFIC PLUGINS:
     " ==========================
