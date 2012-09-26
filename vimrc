@@ -163,8 +163,8 @@ function! InitializeMappings()
     " write to a file using sudo
     map <leader>ww :w !sudo tee % > /dev/null<CR>
 
-    " wipeout current buffer
-    map <leader>bw :bw<CR>
+    " remove current buffer
+    map <leader>br :bw<CR>
 
     " delete last character from system buffer
     map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
