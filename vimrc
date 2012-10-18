@@ -263,6 +263,8 @@ function! InitializeMappings()
     map <leader>mn :<C-u>call mark#SearchCurrentMark(0)<CR>
     map <leader>mN :<C-u>call mark#SearchCurrentMark(1)<CR>
 
+    map <leader>st :let g:syntastic_auto_loc_list = (g:syntastic_auto_loc_list == 1) ? 2 : 1 <BAR> :lcl <BAR> :SyntasticCheck<CR>
+
     " TODO resize window
     map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1) <BAR> resize 25<CR>
     map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1) <BAR> resize 25<CR>
