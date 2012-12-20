@@ -166,6 +166,9 @@ function! InitializeMappings()
     " remove current buffer
     map <leader>br :bw<CR>
 
+    " new buffer in vertical split
+    map <leader>vs :vs <BAR> enew<CR>
+
     " delete last character from system buffer
     map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
 
