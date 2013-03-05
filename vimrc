@@ -1,3 +1,7 @@
+" TODO drop ExecUnixWin calls in maps
+" TODO drop other unnecessary comments
+" TODO update plugins order
+
 set nocompatible
 
 " leader mapping must be set before it is used
@@ -5,49 +9,33 @@ let mapleader = ","
 
 syntax on
 
+
 " ======================================================================
-" INHERITED SETTINGS - partly taken from: $VIMRUNTIME/vimrc_example.vim
+" INHERITED SETTINGS
 " ======================================================================
+"
+" partly taken from: $VIMRUNTIME/vimrc_example.vim
 
-" Don't use Ex mode, use Q for formatting
-"map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-"inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a
 endif
 
-" Only do this part when compiled with support for autocommands.
 if has("autocmd")
-  " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
   au!
 
-  " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
   autocmd BufReadPost *
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
   augroup END
-endif " has("autocmd")
+endif
 
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+          \ | wincmd p | diffthis
 endif
 
 set diffexpr=MyDiff()
@@ -82,8 +70,15 @@ endif
 " MY FUNCTIONS
 " ======================================================================
 
-" more intelligent zero behaviour
-function! MyZeroBehaviour()
+function! DeleteSwapFiles()
+    let current_dir = getcwd()
+    exe('! find ' . current_dir . ' -name "*.sw[opn]"')
+    if confirm('Delete swap files?', "&Yes\n&No", 1)==1
+        exe('! find ' . current_dir . ' -name "*.sw[opn]" -delete')
+    endif
+endfunction
+
+function! BetterZeroBehaviour()
     let first_nonblank = match(getline('.'), '\S') + 1
     let current = col('.')
     if current == 1 || first_nonblank < current
@@ -93,23 +88,21 @@ function! MyZeroBehaviour()
     endif
 endfunction
 
-" delete '\<' and '\>' from search buffer if they are at the beginning and end
 function! CleanupSearchRegister()
+    " delete '\<' and '\>' from search buffer if they are at the beginning and end
     let s_reg = getreg('/')
     if( strpart(s_reg, 0, 2) == '\<' && strpart(s_reg, strlen(s_reg) - 2, 2) == '\>' )
         call setreg( '/', strpart(s_reg, 2, (strlen(s_reg) - 4)) )
     endif
 endfunction
 
-" execute command while preserving position
-function! PreservePosition(cmd)
+function! PreservePositionExec(cmd)
     let [s, c] = [@/, getpos('.')]
     exe a:cmd
     let @/ = s
     call setpos('.', c)
 endfunction
 
-" execute command depending if Vim is in Unix-like environment or in Windows
 function! ExecUnixWin(nixCmd, winCmd)
     if has("win16") || has("win32") || has("win64")
         exe a:winCmd
@@ -118,7 +111,6 @@ function! ExecUnixWin(nixCmd, winCmd)
     endif
 endfunction
 
-" reset all existing mappings and initialize chosen ones
 function! InitializeMappings()
     " reset all existing mappings
     mapclear
@@ -133,6 +125,10 @@ function! InitializeMappings()
     " Y should behave like C and D (yank to the end of line)
     map Y y$
 
+    " Don't use Ex mode, use Q for formatting
+    map Q gq
+
+    " TODO fix weird replace buffer behaviour
     " do not overwrite default register if replacing in visual mode
     vnoremap <silent> p p<ESC>:call setreg('*', getreg('0'))<CR>
 
@@ -150,7 +146,7 @@ function! InitializeMappings()
     vmap k gk
 
     " remap 0 to behave more intelligently
-    nmap 0 :call MyZeroBehaviour()<CR>
+    nmap 0 :call BetterZeroBehaviour()<CR>
 
     " <C-Space> does the omnicomplete
     inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
@@ -165,9 +161,13 @@ function! InitializeMappings()
 
     " remove current buffer
     map <leader>br :bw<CR>
+    map <leader>bw :bw!<CR>
 
-    " new buffer in vertical split
-    map <leader>vs :vs <BAR> enew<CR>
+    " new buffer
+    map <leader>ee :enew<CR>
+
+    " vertical split
+    map <leader>vs :vs<CR>
 
     " delete last character from system buffer
     map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
@@ -184,11 +184,17 @@ function! InitializeMappings()
     " toggle show unprintable characters
     nmap <leader>li :set list!<CR>
 
+    " show registers
+    nmap <leader>rr :reg<CR>
+
     " substitution shortcut
     map <leader>ss :%s//gc<left><left><left>
 
     " cd to directory of current file
     map <leader>cd :cd %:p:h<CR>
+
+    " delete all swap files
+    map <leader>sd : call DeleteSwapFiles()<CR>
 
     " open vimrc for editing
     map <leader>rc :e $VIM/vimrc<CR>
@@ -200,22 +206,25 @@ function! InitializeMappings()
     map <leader>fs :set lines=999 <BAR> set columns=999<CR>
 
     " toggle relative/absolute line numbers
-    map <leader>nu :exe( (&rnu == 1) ? 'set nu' : 'set rnu' )<CR>
+    map <leader>nu :set rnu!<CR>
 
-    " toggle highlighting of current column
-    map <leader>hc :setlocal cursorcolumn!<CR>
+    " highlight current word without jumping
+    map <leader>hw *N
 
     " remove trailing whitespaces
-    nnoremap <leader>tw :call PreservePosition('%s/\s\+$//e')<CR>
+    nnoremap <leader>tw :call PreservePositionExec('%s/\s\+$//e')<CR>
     " double the number of whitespaces at the beginning of each line
-    nnoremap <leader>> :call PreservePosition('%s/^\s*/&&/')<CR>
+    nnoremap <leader>> :call PreservePositionExec('%s/^\s*/&&/')<CR>
     " halve the number of whitespaces at the beginning of each line
-    nnoremap <leader><LT> :call PreservePosition('%s/\(^\s*\)\1/\1/')<CR>
+    nnoremap <leader><LT> :call PreservePositionExec('%s/\(^\s*\)\1/\1/')<CR>
 
-    " find all occurrences of custom pattern in all files
-    map <leader>/v :noautocmd <Bar> vimgrep//gj ** <Bar> cw<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+    " find all occurrences of custom pattern in current git repository
+    call ExecUnixWin('map <leader>/r :exe(":enew <Bar> :r !git grep --full-name -n ")' . repeat("<Left>", 2), '')
     " find all occurrences of custom pattern in all files using external grep
     call ExecUnixWin('map <leader>/g :exe(":enew <Bar> :r !grep -r -n \"\" " . getcwd()) <Home>' . repeat("<Right>", 30), '')
+
+    " delete all lines with "^Binary file"
+    map <leader>bd :g/^Binary file/d<CR>
 
     " custom search across all buffers
     map <leader>/b :bufdo il! //<Left>
@@ -223,21 +232,202 @@ function! InitializeMappings()
     map <leader>sb :bufdo %s//gce<Left><Left><Left><Left>
 
     " list some tags I like to use -> small TaskList
-    map <leader>tg :il! /TODO\\|FIXME\\|XXX\\|NOTE\\|BUG\\|HACK\\|TODEL/<CR>
-    " TODO
-    "autocmd Syntax * syn keyword myTodo TODO FIXME XXX NOTE BUG HACK TODEL contained
-    "autocmd Syntax * syn match myComment "#.*" contains=myTodo
-    "autocmd Syntax * hi def link myTodo Todo
-    "http://stackoverflow.com/questions/4097259/in-vim-how-do-i-highlight-todo-and-fixme
-    "http://stackoverflow.com/questions/8423228/custom-keyword-highlighted-as-todo-in-vi
+    map <leader>tg :il! /\<TODO\>\\|\<FIXME\>\\|\<XXX\>\\|\<NOTE\>\\|\<BUG\>\\|\<HACK\>\\|\<TODEL\>\\|\<OPTIMIZE\>\\|\<DEBUG\>/<CR>
 
     " format xml, *nix only
     call ExecUnixWin("map <leader>fx :%!xmllint --format -<CR>", '')
 
     " format json, *nix only; NOTE if not working, run 'sudo cpan JSON::XS'
     call ExecUnixWin("map <leader>fj :%!json_xs -f json -t json-pretty<CR>", '')
+endfunction
 
-    " ##### PLUGIN MAPPINGS
+function! InitializeLanguageSpecificSettings()
+    " Ruby
+    autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+    autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+    autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+    autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+    autocmd FileType ruby,eruby setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+
+    " Python
+    autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+    " HTML
+    autocmd FileType xhtml,html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+
+    " CSS
+    autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+
+    " JavaScript
+    autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+endfunction
+
+function! InitializePlugins()
+    " Plugins:
+    " TODO
+
+    " NOTE Vundle install
+    "     (i.) git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    "     (ii.) :BundleInstall
+    set nocompatible
+    filetype off
+    set rtp+=~/.vim/bundle/vundle/
+    call vundle#rc()
+    Bundle 'gmarik/vundle'
+
+    Bundle 'davidbeckingsale/Smyck-Color-Scheme'
+    Bundle 'Lokaltog/vim-distinguished'
+
+    Bundle 'scrooloose/nerdtree'
+    let g:NERDTreeIgnore = ['\.pyc$']
+
+    Bundle 'mru.vim'
+    let g:MRU_Max_Entries = 1000
+    let g:MRU_Window_Height = 15
+    let g:MRU_Add_Menu = 0
+
+    Bundle 'LustyJuggler'
+
+    Bundle 'bufexplorer.zip'
+
+    Bundle 'Lokaltog/powerline', {'rtp':  'powerline/bindings/vim'}
+    " NOTE Powerline install
+    "     - needs patched fonts to be installed
+    "         - Menlo-Powerline
+    "             - https://github.com/Lokaltog/powerline-fonts
+    set guifont=Menlo\ Regular\ for\ Powerline:h15
+    let g:Powerline_symbols = 'fancy'
+
+    Bundle 'scrooloose/nerdcommenter'
+
+    Bundle 'sjl/gundo.vim'
+    let g:gundo_width = 80
+
+    Bundle 'wincent/Command-T'
+    " NOTE Command-T install
+    "     (use ruby 1.8.7)  # TODO newer ruby?
+    "     cd ~/.vim/bundle/command-t
+    "     bundle install
+    "     rake make
+    let g:CommandTAlwaysShowDotFiles = 1
+
+    Bundle 'majutsushi/tagbar'
+    " NOTE TagBar install
+    "     - Exuberant Ctags must be installed
+    "         - http://ctags.sourceforge.net/
+    "         - http://adamyoung.net/Exuberant-Ctags-OS-X
+    " FIXME problems with Ruby
+    call ExecUnixWin("let g:tagbar_ctags_bin = '/usr/local/bin/ctags'", "let g:tagbar_ctags_bin = 'C:/ctags58/ctags.exe'")
+    let g:tagbar_left = 1
+
+    Bundle 'ikusalic/vim-rainbow'
+
+    Bundle 'Mark--Karkat'
+    highlight def MarkWord7  ctermbg=DarkCyan    ctermfg=Black guibg=#00AF87 guifg=Black
+    highlight def MarkWord8  ctermbg=DarkMagenta ctermfg=Black guibg=#00AF00 guifg=Black
+    highlight def MarkWord9  ctermbg=DarkGreen   ctermfg=Black guibg=#878700 guifg=Black
+    highlight def MarkWord10 ctermbg=DarkRed     ctermfg=Black guibg=#AF875F guifg=Black
+
+    Bundle 'LargeFile'
+    let g:LargeFile = 5
+
+    Bundle 'scrooloose/syntastic'
+    " NOTE Syntastic install
+    "     - for different languages (must be on path):
+    "          - python: flake8 python package
+    let g:syntastic_auto_loc_list = 1
+    " python ignore errors:
+    " - E128 -> too long lines
+    " - E501 -> continuation line misidentation
+    " - E201 -> whitespace after: (, [ or {
+    " - E202 -> whitespace before ), ] or }
+    let g:syntastic_python_flake8_args = '--ignore=E128,E501,E201,E202'
+
+    Bundle 'airblade/vim-gitgutter'
+    let g:gitgutter_enabled = 0
+
+    Bundle 'nathanaelkane/vim-indent-guides'
+
+    "Bundle 'terryma/vim-multiple-cursors'  # TODO NOTE !!!!!!!
+
+    "Bundle 'chrisbra/NrrwRgn'
+
+    "Bundle 'tpope/vim-fugitive'
+
+    "Bundle 'Valloric/YouCompleteMe'  # TODO
+    " NOTE YouCompleteMe install
+    "     cd ~/.vim/bundle/YouCompleteMe
+    "     ./install.sh --clang-completer
+
+    "Bundle 'henrik/vim-indexed-search'
+    "let g:indexed_search_shortmess = 1
+
+    "Bundle 'garbas/vim-snipmate'
+    "Bundle 'scrooloose/snipmate-snippets'
+
+    " TODO sessions
+
+    "Bundle 'dbext.vim'
+
+    "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+    Bundle 'rubycomplete.vim'
+
+    "Bundle 'tpope/vim-rails'
+    "
+    Bundle 'pythoncomplete'
+    "Bundle 'davidhalter/jedi-vim'
+    "let g:jedi#use_tabs_not_buffers = 0
+    "let g:jedi#popup_on_dot = 0
+
+    "Bundle 'VimClojure'
+
+    Bundle 'tpope/vim-markdown'
+
+    "http://www.vim.org/scripts/script.php?script_id=39 matchit
+    "http://www.vim.org/scripts/script.php?script_id=386 py matchit
+    "http://www.vim.org/scripts/script.php?script_id=290 rb matchit
+
+    filetype plugin indent on
+
+    if has('gui_running')
+        colo smyck
+
+        " mark 80th line
+        set colorcolumn=80
+        hi ColorColumn guibg=#303030
+
+        " Todos should be bluish
+        hi Todo guibg=#4000ff
+        hi Todo guifg=gray
+
+        " fix visual mode
+        hi Visual guibg=#505070
+        hi Visual guifg=gray
+
+        " fix spell-checking
+        hi clear SpellBad
+        hi SpellBad gui=underline guibg=#551111
+    else
+        let &t_Co = 256
+        colo distinguished
+
+        " mark 80th line
+        set colorcolumn=80
+
+        " fix spell-checking
+        hi clear SpellBad
+        hi SpellBad ctermfg=208 ctermbg=124
+    endif
+
+    if has('gui_running')
+        let g:indent_guides_guide_size = 1
+        let g:indent_guides_start_level = 2
+        let g:indent_guides_enable_on_vim_startup = 1
+    endif
+endfunction
+
+function! InitializePluginMappings()
     map <leader>nt :NERDTreeToggle<CR>
     map <leader>nc :NERDTree .<CR>
 
@@ -256,8 +446,6 @@ function! InitializeMappings()
 
     map <leader>tb :TagbarToggle<CR>
 
-    call ExecUnixWin('', "map <leader>ct :ConqueTerm bash<CR>")
-
     map <leader>rb :RainbowParenthesesToggle<CR>
 
     map <leader>mt :Mark<CR>
@@ -268,269 +456,9 @@ function! InitializeMappings()
 
     map <leader>st :let g:syntastic_auto_loc_list = (g:syntastic_auto_loc_list == 1) ? 2 : 1 <BAR> :lcl <BAR> :SyntasticCheck<CR>
 
-    " TODO resize window
-    map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1) <BAR> resize 25<CR>
-    map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1) <BAR> resize 25<CR>
-endfunction
+    map <leader>gg :GitGutterToggle<CR>
 
-" custom language specific settings
-function! InitializeLanguageSpecificSettings()
-    " Ruby
-    autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-    autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-    autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-    autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-    autocmd FileType ruby,eruby setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
-
-    " Python
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-    " HTML
-    autocmd FileType xhtml,html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
-
-    " CSS
-    autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
-endfunction
-
-" plugins
-function! InitializePlugins()
-    " General:
-    " --------
-    " Vundle -> Vim plugin manager
-    " Wombat -> Dark gray color scheme
-    " NERDTree -> Filesystem explorer
-    " MRU -> Plugin to manage Most Recently Used (MRU) files
-    " LustyJuggler -> Switch very quickly among your active buffers
-    " BufExplorer -> Find buffers when there are many open ones
-    " Command-T -> Fast file navigation for VIM
-    " NERDCommenter -> easy commenting of code for many filetypes
-    " Gundo -> Visual Undo in vim with diff's to check the differences
-    " TagBar -> Source code browser
-    " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
-    " Rainbow -> colors nasted parentheses
-    " Mark : Highlight several words in different colors simultaneously
-    "
-    " Language Specific:
-    " ------------------
-    " pythoncomplete : Python Omni Completion
-    " rubycomplete.vim : ruby omni-completion
-    " rails.vim : Ruby on Rails: easy file navigation, enhanced syntax highlighting, and more
-
-    " Vundle -> Vim plugin manager
-    "     https://github.com/gmarik/vundle
-    "     - NOTE install:
-    "     (i.) git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-    "     (ii.) :BundleInstall
-    "     - usage:
-    "     :BundleList          - list configured bundles
-    "     :BundleInstall(!)    - install(update) bundles
-    "     :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-    set nocompatible
-    filetype off
-    set rtp+=~/.vim/bundle/vundle/
-    call vundle#rc()
-    Bundle 'gmarik/vundle'
-
-    " color scheme
-    Bundle 'vim-scripts/Wombat'
-    " TODO screen saver
-    "Bundle 'vim-scripts/matrix.vim--Yang'
-
-    " vundle settings for all other plugins
-    Bundle 'scrooloose/nerdtree'
-    Bundle 'vim-scripts/mru.vim'
-    Bundle 'vim-scripts/LustyJuggler'
-    Bundle 'vim-scripts/bufexplorer.zip'
-    Bundle 'wincent/Command-T'
-    Bundle 'scrooloose/nerdcommenter'
-    Bundle 'sjl/gundo.vim'
-    Bundle 'majutsushi/tagbar'
-    Bundle 'vim-scripts/Conque-Shell'
-    Bundle 'ikusalic/vim-rainbow'
-    Bundle 'vim-scripts/Mark--Karkat'
-    Bundle 'tpope/vim-fugitive'
-    Bundle 'vim-scripts/LargeFile'
-    Bundle 'scrooloose/syntastic'
-    "Bundle 'garbas/vim-snipmate'  # TODO
-    "Bundle 'scrooloose/snipmate-snippets'  # TODO
-
-
-    "Bundle 'TODO'  TODO sessions
-
-    " http://www.vim.org/scripts/script.php?script_id=39 matchit  # TODO
-    "Bundle 'vim-scripts/dbext.vim'  # TODO
-    "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  # TODO
-
-    " language specific plugins
-    Bundle 'vim-scripts/rubycomplete.vim'
-    Bundle 'tpope/vim-rails'
-    Bundle 'vim-scripts/pythoncomplete'
-    Bundle 'fs111/pydoc.vim'
-
-    " TODO ropevim
-    "http://www.vim.org/scripts/script.php?script_id=386 py matchit  # TODO
-    "http://www.vim.org/scripts/script.php?script_id=290 rb matchit  # TODO
-
-    filetype plugin indent on
-
-    " Wombat -> Dark gray color scheme
-    "     http://www.vim.org/scripts/script.php?script_id=1778
-    "     - usage:
-    "     :colo wombat in vimrc
-    if has('gui_running')
-        :colo wombat
-
-        " make the cursor visible when on parentheses
-        hi cursor guifg=black
-
-        " mark 80th line
-        set colorcolumn=80
-        hi ColorColumn guibg=#303030
-
-        " do not use italic:
-        hi Comment gui=none
-        hi String gui=none
-        hi Todo gui=none
-
-        " Todos should be bluish
-        hi Todo guibg=#4000ff
-    endif
-
-    " NERDTree -> Filesystem explorer
-    "     http://www.vim.org/scripts/script.php?script_id=1658
-    "     - usage:
-    "     <leader>nt
-    "     <leader>nc
-    "     :NERDTree d:\
-
-    " MRU -> Plugin to manage Most Recently Used (MRU) files
-    "     http://www.vim.org/scripts/script.php?script_id=521
-    "     - usage:
-    "     <leader>mr
-    "     :MRU {pattern}
-    let g:MRU_Max_Entries = 1000
-    let g:MRU_Window_Height = 15
-    let g:MRU_Add_Menu = 0
-
-    " LustyJuggler -> Switch very quickly among your active buffers
-    "     http://www.vim.org/scripts/script.php?script_id=2050
-    "     - usage:
-    "     <leader>lj
-
-    " BufExplorer -> Find buffers when there are many open ones
-    "     http://www.vim.org/scripts/script.php?script_id=42
-    "     - usage:
-    "     <leader>be
-    "     d -> delete buffer
-
-    " Command-T -> Fast file navigation for VIM
-    "     http://www.vim.org/scripts/script.php?script_id=3025
-    "     - NOTE install (when placed in bundle):
-    "     (use ruby 1.8.7)
-    "     cd ~/.vim/bundle/command-t
-    "     bundle install
-    "     rake make
-    "     - usage:
-    "     <leader>tt
-    "     :CommandTFlush
-    let g:CommandTAlwaysShowDotFiles = 1
-
-    " NERDCommenter -> easy commenting of code for many filetypes
-    "     http://www.vim.org/scripts/script.php?script_id=1218
-    "     - usage:
-    "     <leader>cc
-    "
-
-    " Gundo -> Visual Undo in vim with diff's to check the differences
-    "     http://www.vim.org/scripts/script.php?script_id=3304
-    "     - usage:
-    "     <leader>gd
-    let g:gundo_width = 80
-
-    " TagBar -> Source code browser
-    "     http://www.vim.org/scripts/script.php?script_id=3465
-    "     - NOTE Exuberant Ctags must be installed
-    "         - http://ctags.sourceforge.net/
-    "         - http://adamyoung.net/Exuberant-Ctags-OS-X
-    "     - usage:
-    "     <leader>tb
-    call ExecUnixWin("let g:tagbar_ctags_bin = '/usr/local/bin/ctags'", "let g:tagbar_ctags_bin = 'C:/ctags58/ctags.exe'")
-    let g:tagbar_left = 1
-
-    " Conque Shell (Term) -> Run interactive commands inside a Vim buffer
-    "     http://www.vim.org/scripts/script.php?script_id=2771
-    "     - usage:
-    "      <leader>ct
-    "     :ConqueTerm {cmd/python/...}
-    let g:ConqueTerm_Color = 2
-    let g:ConqueTerm_Syntax = 'python'
-
-    " (modified) Rainbow -> colors nasted parentheses
-    "     https://github.com/ikusalic/vim-rainbow
-    "     - usage:
-    "     <leader>rb
-
-    " Mark -> Highlight several words in different colors simultaneously
-    "     http://www.vim.org/scripts/script.php?script_id=2666
-    "     - usage:
-    "     <leader>mt
-    "     <leader>mm
-    "     <leader>mc
-    "     <leader>mn
-    "     <leader>mN
-    highlight def MarkWord7  ctermbg=DarkCyan    ctermfg=Black guibg=#00AF87 guifg=Black
-    highlight def MarkWord8  ctermbg=DarkMagenta ctermfg=Black guibg=#00AF00 guifg=Black
-    highlight def MarkWord9  ctermbg=DarkGreen   ctermfg=Black guibg=#878700 guifg=Black
-    highlight def MarkWord10 ctermbg=DarkRed     ctermfg=Black guibg=#AF875F guifg=Black
-
-    " fugitive.vim - Git wrapper
-    "     https://github.com/tpope/vim-fugitive
-    "     - usage:
-    "     TODO
-
-    " LargeFile : Edit large files quickly (keywords: large huge speed)
-    "     http://www.vim.org/scripts/script.php?script_id=1506
-    "     - usage: automatic
-    let g:LargeFile = 5
-
-    " Syntastic -> runs files through external syntax checkers
-    "     https://github.com/scrooloose/syntastic
-    "     - NOTE: installs for different languages (must be on path):
-    "             - python: flake8 python package
-    "     - usage: automatic
-    let g:syntastic_auto_loc_list = 1
-    " ignore:
-    " - E128 -> too long lines
-    " - E501 -> continuation line misidentation
-    " - E201 -> whitespace after: (, [ or {
-    " - E202 -> whitespace before ), ] or }
-    let g:syntastic_python_checker_args='--ignore=E128,E501,E201,E202'
-
-    " LANGUAGE SPECIFIC PLUGINS:
-    " ==========================
-    " Python:
-    " -------
-    " pythoncomplete : Python Omni Completion
-    "     http://www.vim.org/scripts/script.php?script_id=1542
-    "     - usage: automatic
-    "
-    " Pydoc -> Opens up pydoc within vim
-    "     http://www.vim.org/scripts/script.php?script_id=910
-    "     - usage:
-    "     <leader>p{wW}
-    "     :Pydoc {smt}
-    call ExecUnixWin("", 'let g:pydoc_cmd = "C:/Python26/Lib/pydoc.py"')  " NOTE
-
-    " Ruby:
-    " -----
-    " rubycomplete.vim : ruby omni-completion
-    "     http://www.vim.org/scripts/script.php?script_id=1662
-    "     - usage: automatic
-    "
-    " rails.vim : Ruby on Rails: easy file navigation, enhanced syntax highlighting, and more
-    "     http://www.vim.org/scripts/script.php?script_id=1567
-    "     - usage:
-    "     TODO
+    map <leader>ig :IndentGuidesToggle<CR>
 endfunction
 
 
@@ -555,6 +483,7 @@ set lazyredraw
 set guioptions=egrL
 
 set ruler
+set number
 set relativenumber
 set title
 set cmdheight=2
@@ -587,7 +516,7 @@ set writebackup
 set noautowrite
 set noautowriteall
 set noautoread
-set ffs=dos,unix,mac
+set ffs=unix,dos,mac
 set enc=utf-8
 
 set foldmethod=indent
@@ -596,7 +525,6 @@ set foldlevel=99
 set nolist
 set listchars=tab:>-,trail:.,eol:$,nbsp:.
 
-set guifont=Lucida_Console:h15,Monaco:h15
 set guicursor=a:blinkon0
 
 set completeopt=menuone,longest,preview
@@ -610,12 +538,23 @@ set completeopt=menuone,longest,preview
 
 " set custom mappings only
 autocmd VimEnter * call InitializeMappings()
+autocmd VimEnter * call InitializePluginMappings()
 
 " maximise Vim's window
-call ExecUnixWin("set lines=9999 | set columns=999", "autocmd GUIEnter * simalt ~x")
+if has('gui_running')
+    call ExecUnixWin("set lines=9999 | set columns=999", "autocmd GUIEnter * simalt ~x")
+endif
 
 " close Omni-Completion tip window on movement in insert mode or when leaving insert mode
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+" highlight more Todo keywords
+augroup HiglightTODO
+    autocmd!
+    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', '\<TODO\>\|\<FIXME\>\|\<XXX\>\|\<NOTE\>\|\<BUG\>\|\<HACK\>\|\<TODEL\>\|\<OPTIMIZE\>\|\<DEBUG\>')
+augroup END
+
+autocmd BufRead,BufNewFile *.md,*.markdown set filetype=markdown
 
 call InitializeLanguageSpecificSettings()
