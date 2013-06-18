@@ -1,0 +1,20 @@
+[user]
+    name = Ivan Kusalic
+    email = ivan@ikusalic.com
+[core]
+    excludesfile = /Users/ikusalic/.gitignore_global
+    editor = /Applications/MacVim.app/Contents/MacOS/Vim
+[github]
+    user = ikusalic
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+[alias]
+    bav = branch -av
+    fap = fetch --all --prune
+    fbs = !git fetch --all --prune && git fetch --tags && git branch -av && git status
+    g =  grep -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
+    p = pull --rebase
+[merge]
+	conflictstyle = diff3
