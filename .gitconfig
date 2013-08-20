@@ -11,10 +11,29 @@
     diff = auto
     status = auto
 [alias]
+    a = add -u
     bav = branch -av
+    c = commit
+    ca = commit -a --amend
+    cm = commit -am
+    co = checkout
+    d = diff
+    d1 = diff HEAD~1
+    ds = diff --stat
+    dc = diff --cached
     fap = fetch --all --prune
     fbs = !git fetch --all --prune && git fetch --tags && git branch -av && git status
-    g =  grep -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
-    p = pull --rebase
+    g =  grep -n -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
+    l = log -5
+    ;p = pull --rebase
+    po = push origin
+    r = rebase
+    ri = rebase -i
+    ri7 = rebase -i HEAD~7
+    ra = rebase --abort
+    rc = rebase --continue
+    s = status
 [merge]
 	conflictstyle = diff3
+[help]
+	autocorrect = 1
