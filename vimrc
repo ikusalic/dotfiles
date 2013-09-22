@@ -242,6 +242,9 @@ function! InitializeMappings()
 endfunction
 
 function! InitializeLanguageSpecificSettings()
+    " bash with vi input mode
+    autocmd BufRead,BufNewFile bash-fc-* set filetype=sh
+
     " Ruby
     autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
     autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
