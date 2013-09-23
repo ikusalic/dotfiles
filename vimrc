@@ -515,6 +515,7 @@ set incsearch
 
 set hidden
 set nobackup
+set noswapfile
 set writebackup
 set noautowrite
 set noautowriteall
