@@ -13,7 +13,8 @@ function set_bash_prompt {
             git_result="$green ($git_branch)$color_off"
         fi
     fi
-    export PS1="[\t] $light_green[\u \w$color_off$git_result$light_green]\$$color_off "
+    # use PS_CUSTOM_PREFIX for additional customization
+    export PS1="$PS_CUSTOM_PREFIX[\t] $light_green[\u \w$color_off$git_result$light_green]\$$color_off "
 }
 export PROMPT_COMMAND=set_bash_prompt
 
@@ -70,4 +71,5 @@ alias pb_use="pythonbrew venv use"
 
 
 ##### HOST SPECIFIC SETTINGS #####
+# use .hostrc for additional customization
 [[ -s $HOME/.hostrc ]] && source $HOME/.hostrc
