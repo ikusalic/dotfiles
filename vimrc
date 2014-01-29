@@ -6,6 +6,7 @@ set nocompatible
 
 " leader mapping must be set before it is used
 let mapleader = ","
+let maplocalleader = "\\"
 
 syntax on
 
@@ -166,9 +167,6 @@ function! InitializeMappings()
     " new buffer
     map <leader>ee :enew<CR>
 
-    " vertical split
-    map <leader>vs :vs<CR>
-
     " delete last character from system buffer
     map <leader>dd :call setreg('*', strpart(getreg('*'), 0, strlen(getreg('*')) - 1))<CR>
 
@@ -211,20 +209,14 @@ function! InitializeMappings()
     " highlight current word without jumping
     map <leader>hw *N
 
+    map <leader>dm :delmarks!<CR>
+
     " remove trailing whitespaces
     nnoremap <leader>tw :call PreservePositionExec('%s/\s\+$//e')<CR>
     " double the number of whitespaces at the beginning of each line
     nnoremap <leader>> :call PreservePositionExec('%s/^\s*/&&/')<CR>
     " halve the number of whitespaces at the beginning of each line
     nnoremap <leader><LT> :call PreservePositionExec('%s/\(^\s*\)\1/\1/')<CR>
-
-    " find all occurrences of custom pattern in current git repository
-    call ExecUnixWin('map <leader>/r :exe(":enew <Bar> :r !git grep --full-name -n ")' . repeat("<Left>", 2), '')
-    " find all occurrences of custom pattern in all files using external grep
-    call ExecUnixWin('map <leader>/g :exe(":enew <Bar> :r !grep -r -n \"\" " . getcwd()) <Home>' . repeat("<Right>", 30), '')
-
-    " delete all lines with "^Binary file"
-    map <leader>bd :g/^Binary file/d<CR>
 
     " custom search across all buffers
     map <leader>/b :bufdo il! //<Left>
@@ -242,6 +234,10 @@ function! InitializeMappings()
 endfunction
 
 function! InitializeLanguageSpecificSettings()
+    " Markdown
+    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=markdown
+    autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=78
+
     " bash with vi input mode
     autocmd BufRead,BufNewFile bash-fc-* set filetype=sh
 
@@ -301,6 +297,8 @@ function! InitializePlugins()
     set guifont=Menlo\ Regular\ for\ Powerline:h15
     let g:Powerline_symbols = 'fancy'
 
+    "Bundle 'bling/vim-airline'
+
     Bundle 'scrooloose/nerdcommenter'
 
     Bundle 'sjl/gundo.vim'
@@ -308,16 +306,16 @@ function! InitializePlugins()
 
     Bundle 'wincent/Command-T'
     " NOTE Command-T install
-    "     (use ruby 1.8.7)  # TODO newer ruby?
-    "     cd ~/.vim/bundle/command-t
-    "     bundle install
-    "     rake make
+    "    cd ~/.vim/bundle/Command-T/ruby/command-t
+    "    ruby extconf.rb  # with ruby 1.8.7
+    "    make
     let g:CommandTAlwaysShowDotFiles = 1
 
     Bundle 'majutsushi/tagbar'
     " NOTE TagBar install
     "     - Exuberant Ctags must be installed
     "         - http://ctags.sourceforge.net/
+    "         - brew install ctags
     "         - http://adamyoung.net/Exuberant-Ctags-OS-X
     " FIXME problems with Ruby
     call ExecUnixWin("let g:tagbar_ctags_bin = '/usr/local/bin/ctags'", "let g:tagbar_ctags_bin = 'C:/ctags58/ctags.exe'")
@@ -339,53 +337,54 @@ function! InitializePlugins()
     "     - for different languages (must be on path):
     "          - python: flake8 python package
     let g:syntastic_auto_loc_list = 1
-    " python ignore errors:
-    " - E128 -> too long lines
-    " - E501 -> continuation line misidentation
-    " - E201 -> whitespace after: (, [ or {
-    " - E202 -> whitespace before ), ] or }
-    let g:syntastic_python_flake8_args = '--ignore=E128,E501,E201,E202'
 
     Bundle 'airblade/vim-gitgutter'
     let g:gitgutter_enabled = 0
 
     Bundle 'nathanaelkane/vim-indent-guides'
 
-    "Bundle 'terryma/vim-multiple-cursors'  # TODO NOTE !!!!!!!
+    Bundle 'terryma/vim-multiple-cursors'
+    let g:multi_cursor_start_key='<C-A>'
 
-    "Bundle 'chrisbra/NrrwRgn'
+    Bundle 'mileszs/ack.vim'
 
-    "Bundle 'tpope/vim-fugitive'
+    Bundle 'regedarek/ZoomWin'
 
-    "Bundle 'Valloric/YouCompleteMe'  # TODO
-    " NOTE YouCompleteMe install
-    "     cd ~/.vim/bundle/YouCompleteMe
-    "     ./install.sh --clang-completer
+    Bundle 'SearchComplete'
+
+    Bundle 'kshenoy/vim-signature'
+    let g:SignatureEnabledAtStartup = 1
+
+    "Bundle 'tpope/vim-surround'  # TODO
+
+    "Bundle 'sjl/splice.vim'
 
     "Bundle 'henrik/vim-indexed-search'
     "let g:indexed_search_shortmess = 1
 
-    "Bundle 'garbas/vim-snipmate'
-    "Bundle 'scrooloose/snipmate-snippets'
-
     " TODO sessions
-
-    "Bundle 'dbext.vim'
-
-    "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 
     Bundle 'rubycomplete.vim'
 
-    "Bundle 'tpope/vim-rails'
-    "
     Bundle 'pythoncomplete'
-    "Bundle 'davidhalter/jedi-vim'
-    "let g:jedi#use_tabs_not_buffers = 0
-    "let g:jedi#popup_on_dot = 0
-
-    "Bundle 'VimClojure'
 
     Bundle 'tpope/vim-markdown'
+
+    Bundle 'Valloric/YouCompleteMe'
+    " NOTE YouCompleteMe install
+    "     cd ~/.vim/bundle/YouCompleteMe
+    "     ./install.sh  # or ./install.sh --clang-completer (semantic support for C family)
+    "
+    "     - if vim is crashing (Vim: Caught deadly signal ABRT):
+    "         - linked lib: `otool -L /Applications/MacVim.app/Contents/MacOS/Vim | grep Python`
+    "         - `install_name_tool -change <path-to-linked-lib <path-to-new-lib> /Applications/MacVim.app/Contents/MacOS/Vim`
+    "             - <path-to-new-lib>: /usr/local/Cellar/python/2.7.6/Frameworks/Python.framework/Versions/2.7/Python
+    "         - check:
+    "             - https://github.com/Valloric/YouCompleteMe/issues/8
+    "             - https://github.com/Valloric/YouCompleteMe/issues/18
+
+    "Bundle 'dansomething/vim-eclim'  # TODO
+    "let g:EclimCompletionMethod = 'omnifunc'
 
     "http://www.vim.org/scripts/script.php?script_id=39 matchit
     "http://www.vim.org/scripts/script.php?script_id=386 py matchit
@@ -462,6 +461,24 @@ function! InitializePluginMappings()
     map <leader>gg :GitGutterToggle<CR>
 
     map <leader>ig :IndentGuidesToggle<CR>
+
+    xmap <C-A> :<C-U>call multiple_cursors#new("v")<CR>
+    nmap <C-A> :call multiple_cursors#new("n")<CR>
+
+    map <leader>aa :Ack
+
+    map <leader>zw :ZoomWin<CR>
+
+    noremap / :call SearchCompleteStart()<CR>/
+
+    map <leader>tm :SignatureToggleSigns<CR>
+
+    "map <leader>ec :ProjectCreate  -n ruby<left><left><left><left><left><left><left><left>  # TODO
+    "map <leader>ek :ShutdownEclim<CR>
+    "" show errors for Eclim
+    "map <leader>ll :lli<CR>
+    "map <leader>ln :lnext<CR>
+    "map <leader>lp :lprevious<CR>
 endfunction
 
 
@@ -488,7 +505,7 @@ set guioptions=egrL
 set ruler
 set number
 set relativenumber
-set title
+set notitle
 set cmdheight=2
 set visualbell
 set laststatus=2
@@ -558,7 +575,5 @@ augroup HiglightTODO
     autocmd!
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', '\<TODO\>\|\<FIXME\>\|\<XXX\>\|\<NOTE\>\|\<BUG\>\|\<HACK\>\|\<TODEL\>\|\<OPTIMIZE\>\|\<DEBUG\>')
 augroup END
-
-autocmd BufRead,BufNewFile *.md,*.markdown set filetype=markdown
 
 call InitializeLanguageSpecificSettings()
