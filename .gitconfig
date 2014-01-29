@@ -2,7 +2,7 @@
     name = Ivan Kusalic
     email = ivan@ikusalic.com
 [core]
-    excludesfile = /Users/ikusalic/.gitignore_global
+    excludesfile = ~/.gitignore_global
     editor = /Applications/MacVim.app/Contents/MacOS/Vim
 [github]
     user = ikusalic
@@ -10,30 +10,40 @@
     branch = auto
     diff = auto
     status = auto
+[grep]
+    lineNumber = true
 [alias]
-    a = add -u
+    a = add -u :/
     bav = branch -av
     c = commit
     ca = commit -a --amend
     cm = commit -am
     co = checkout
     d = diff
-    d1 = diff HEAD~1
-    ds = diff --stat
+    d1 = show HEAD
     dc = diff --cached
+    ds = diff --stat
+    dw = diff --color-words
     fap = fetch --all --prune
-    fbs = !git fetch --all --prune && git fetch --tags && git branch -av && git status
-    g =  grep -n -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
+    fbs = !git fetch --all --prune && git fetch --tags && git branch -av && echo && git status
+    g =  grep -n
+    gt =  grep -n -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
+    h = rev-parse HEAD
     l = log -5
-    ;p = pull --rebase
+    lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)'
+    lga = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all
+    ma = merge --abort
+    p = push
     po = push origin
+    purr = pull --rebase
     r = rebase
-    ri = rebase -i
-    ri7 = rebase -i HEAD~7
     ra = rebase --abort
     rc = rebase --continue
+    ri7 = rebase -i HEAD~7
+    rem = remote -v
     s = status
-[merge]
-	conflictstyle = diff3
+    wipe = reset --hard HEAD
 [help]
-	autocorrect = 1
+    autocorrect = 1
+[merge]
+    conflictstyle = diff3

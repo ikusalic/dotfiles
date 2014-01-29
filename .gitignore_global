@@ -1,5 +1,4 @@
 *~
-.DS_Store
-*.swp
-*.swo
 *.pyc
+.*sw[a-z]
+.DS_Store
