@@ -1,8 +1,16 @@
 function set_bash_prompt {
+    local last_status=$?
+
     local red="\[\e[0;31m\]"
     local green="\[\e[0;32m\]"
     local light_green="\[\e[1;32m\]"
     local color_off="\[\e[0m\]"
+
+    if [ $last_status -eq 0 ]; then
+        local status_indicator="$green \$ $color_off"
+    else
+        local status_indicator="$red \$ $color_off"
+    fi
 
     local git_branch=$(__git_ps1 "%s")
     if [ -n "$git_branch" ]; then
@@ -13,8 +21,11 @@ function set_bash_prompt {
             git_result="$green ($git_branch)$color_off"
         fi
     fi
+    git rev-parse &> /dev/null || git_result=''
+
     # use PS_CUSTOM_PREFIX for additional customization
-    export PS1="$PS_CUSTOM_PREFIX[\t] $light_green[\u \w$color_off$git_result$light_green]\$$color_off "
+
+    export PS1="$PS_CUSTOM_PREFIX[\t] $light_green[\u \w$color_off$git_result$light_green]$status_indicator"
 }
 export PROMPT_COMMAND=set_bash_prompt
 
