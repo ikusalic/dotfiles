@@ -40,7 +40,7 @@ export HISTCONTROL=ignoredups:ignorespace
 export HISTIGNORE="pwd:ls:dir:ls -al:ls -l:h:history"
 export HISTFILESIZE=100000
 export HISTSIZE=100000
-export HISTCONTROL=ignoredups
+export HISTCONTROL=ignoredups:ignorespace
 export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S> "
 
 shopt -s checkwinsize
@@ -48,10 +48,15 @@ shopt -s extglob
 shopt -s histappend
 shopt -s hostcomplete
 
-alias hist="history | grep $1"
+alias g="grep -i"
+alias a="awk"
+alias w="watch -n 0.5"
 alias ls="ls -FG"
 alias ll="ls -al"
 alias lt="ls -ltr"
+alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
+alias tarc="tar -cvzf"
+alias tard="tar -xvzf"
 
 
 ##### OS SPECIFIC SETTINGS #####
@@ -84,3 +89,5 @@ alias pb_use="pythonbrew venv use"
 ##### HOST SPECIFIC SETTINGS #####
 # use .hostrc for additional customization
 [[ -s $HOME/.hostrc ]] && source $HOME/.hostrc
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
