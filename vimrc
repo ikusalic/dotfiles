@@ -262,9 +262,6 @@ function! InitializeLanguageSpecificSettings()
 endfunction
 
 function! InitializePlugins()
-    " Plugins:
-    " TODO
-
     " NOTE Vundle install
     "     (i.) git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     "     (ii.) :BundleInstall
@@ -342,6 +339,14 @@ function! InitializePlugins()
     let g:gitgutter_enabled = 0
 
     Bundle 'nathanaelkane/vim-indent-guides'
+    let g:indent_guides_guide_size = 1
+    let g:indent_guides_start_level = 2
+    let g:indent_guides_enable_on_vim_startup = 1
+    if !has('gui_running')
+        let g:indent_guides_auto_colors = 0
+        autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=Red ctermbg=234
+        autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=Green ctermbg=236
+    endif
 
     Bundle 'terryma/vim-multiple-cursors'
     let g:multi_cursor_start_key='<C-A>'
@@ -420,12 +425,6 @@ function! InitializePlugins()
         " fix spell-checking
         hi clear SpellBad
         hi SpellBad ctermfg=208 ctermbg=124
-    endif
-
-    if has('gui_running')
-        let g:indent_guides_guide_size = 1
-        let g:indent_guides_start_level = 2
-        let g:indent_guides_enable_on_vim_startup = 1
     endif
 endfunction
 
