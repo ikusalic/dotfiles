@@ -195,7 +195,7 @@ function! InitializeMappings()
     map <leader>sd : call DeleteSwapFiles()<CR>
 
     " open vimrc for editing
-    map <leader>rc :e $VIM/vimrc<CR>
+    map <leader>rc :e ~/.vimrc<CR>
 
     " save and run current file
     map <leader>go :w<CR>:!"%"<CR>
@@ -256,9 +256,6 @@ function! InitializeLanguageSpecificSettings()
 
     " CSS
     autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
-
-    " JavaScript
-    autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 endfunction
 
 function! InitializePlugins()
@@ -289,9 +286,9 @@ function! InitializePlugins()
     Bundle 'Lokaltog/powerline', {'rtp':  'powerline/bindings/vim'}
     " NOTE Powerline install
     "     - needs patched fonts to be installed
-    "         - Menlo-Powerline
+    "     - Sauce Code Powerline
     "             - https://github.com/Lokaltog/powerline-fonts
-    set guifont=Menlo\ Regular\ for\ Powerline:h15
+    set guifont=Source\ Code\ Pro\ for\ Powerline:h15
     let g:Powerline_symbols = 'fancy'
 
     "Bundle 'bling/vim-airline'
@@ -351,6 +348,7 @@ function! InitializePlugins()
     Bundle 'terryma/vim-multiple-cursors'
     let g:multi_cursor_start_key='<C-A>'
 
+    " NOTE install ack: `apt-get install ack-grep` or `brew install ack`
     Bundle 'mileszs/ack.vim'
 
     Bundle 'regedarek/ZoomWin'
