@@ -251,6 +251,9 @@ function! InitializeLanguageSpecificSettings()
     " Python
     autocmd FileType python set omnifunc=pythoncomplete#Complete
 
+    " Scala
+    autocmd FileType scala setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
+
     " HTML
     autocmd FileType xhtml,html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
@@ -370,6 +373,8 @@ function! InitializePlugins()
     Bundle 'rubycomplete.vim'
 
     Bundle 'pythoncomplete'
+
+    Bundle 'scala/scala-dist', {'rtp':  'tool-support/src/vim'}
 
     Bundle 'tpope/vim-markdown'
 
