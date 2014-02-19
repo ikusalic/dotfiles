@@ -361,6 +361,10 @@ function! InitializePlugins()
     Bundle 'kshenoy/vim-signature'
     let g:SignatureEnabledAtStartup = 1
 
+    Bundle 'xolox/vim-misc'
+    Bundle 'xolox/vim-easytags'
+    let g:easytags_updatetime_warn = 0
+
     "Bundle 'tpope/vim-surround'  # TODO
 
     "Bundle 'sjl/splice.vim'
@@ -474,6 +478,8 @@ function! InitializePluginMappings()
     noremap / :call SearchCompleteStart()<CR>/
 
     map <leader>tm :SignatureToggleSigns<CR>
+
+    map <leader>ct :UpdateTags -R .<CR>
 
     "map <leader>ec :ProjectCreate  -n ruby<left><left><left><left><left><left><left><left>  # TODO
     "map <leader>ek :ShutdownEclim<CR>
