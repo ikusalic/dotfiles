@@ -51,9 +51,9 @@ shopt -s hostcomplete
 alias g="grep -i"
 alias a="awk"
 alias w="watch -n 0.5"
-alias ls="ls -FG"
-alias ll="ls -al"
-alias lt="ls -ltr"
+alias ls="ls -FGh"
+alias ll="ls -ahl"
+alias lt="ls -hlrt"
 alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
 alias tarc="tar -cvzf"
 alias tard="tar -xvzf"
@@ -67,8 +67,11 @@ then  # MAC OS X
 
     export PATH="/usr/local/bin:$PATH"  # for homebrew
     export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH"
+    export PATH=$PATH:$HOME/.rvm/bin  # Add RVM to PATH for scripting
 
     [[ -s "$(brew --prefix)/etc/bash_completion" ]] && source "$(brew --prefix)/etc/bash_completion"
+
+    [[ -s "$HOME/.git-prompt.sh" ]] && source "$HOME/.git-prompt.sh"
 elif [[ "$OSTYPE" == "linux-gnu" ]]
 then  # LINUX
     [[ -s /etc/bash_completion ]] && source /etc/bash_completion
@@ -82,12 +85,8 @@ fi
 alias be="bundle exec"
 alias rg_use="rvm gemset use"
 alias rg_list="rvm gemset list"
-alias pb_list="pythonbrew venv list"
-alias pb_use="pythonbrew venv use"
 
 
 ##### HOST SPECIFIC SETTINGS #####
 # use .hostrc for additional customization
 [[ -s $HOME/.hostrc ]] && source $HOME/.hostrc
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
