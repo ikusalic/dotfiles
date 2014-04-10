@@ -32,6 +32,7 @@
     h = rev-parse HEAD
     l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' -5
     lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)'
+    ll = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all -5
     lga = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all
     ma = merge --abort
     p = push
@@ -44,6 +45,7 @@
     rc = rebase --continue
     ri7 = rebase -i HEAD~7
     rem = remote -v
+    rom = rebase origin/master
     s = status
     tmp = remote add tmp git@github.com:ikusalic/tmp.git
     wipe = reset --hard HEAD

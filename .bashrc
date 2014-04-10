@@ -1,6 +1,10 @@
 function set_bash_prompt {
     local last_status=$?
 
+    GIT_PS1_SHOWDIRTYSTATE=true
+    GIT_PS1_SHOWUNTRACKEDFILES=true
+    GIT_PS1_SHOWUPSTREAM="verbose git"
+
     local red="\[\e[0;31m\]"
     local green="\[\e[0;32m\]"
     local light_green="\[\e[1;32m\]"
@@ -48,11 +52,12 @@ shopt -s extglob
 shopt -s histappend
 shopt -s hostcomplete
 
-alias g="grep -i"
+alias g="grep -v grep | grep -i"
 alias a="awk"
 alias w="watch -n 0.5"
-alias ls="ls -FGh"
+alias l="ls -ahl"
 alias ll="ls -ahl"
+alias ls="ls -FGh"
 alias lt="ls -hlrt"
 alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
 alias tarc="tar -cvzf"
