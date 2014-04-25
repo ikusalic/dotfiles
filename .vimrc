@@ -136,9 +136,8 @@ function! InitializeMappings()
     " <C-L> should clear highlights
     nnoremap <C-L> :nohl<CR><C-L>
 
-    " previous/next buffer
-    map <C-H> :bp<CR>
-    map <C-J> :bn<CR>
+    " next buffer
+    map <C-H> :bn<CR>
 
     " j and k should work on visual lines when real lines are wrapped
     nmap j gj
@@ -235,7 +234,7 @@ endfunction
 
 function! InitializeLanguageSpecificSettings()
     " Markdown
-    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=markdown
+    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=
     autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=78
 
     " bash with vi input mode
@@ -365,6 +364,9 @@ function! InitializePlugins()
     Bundle 'xolox/vim-easytags'
     let g:easytags_updatetime_warn = 0
 
+    Bundle 'mikewest/vimroom'
+    Bundle 'reedes/vim-wheel'
+
     "Bundle 'tpope/vim-surround'  # TODO
 
     "Bundle 'sjl/splice.vim'
@@ -487,6 +489,10 @@ function! InitializePluginMappings()
     "map <leader>ll :lli<CR>
     "map <leader>ln :lnext<CR>
     "map <leader>lp :lprevious<CR>
+    map <leader>vr :VimroomToggle<CR>
+
+    map <C-J> :call wheel#VScroll(0, '')<CR>
+    map <C-K> :call wheel#VScroll(1, '')<CR>
 endfunction
 
 
@@ -547,6 +553,7 @@ set noautowriteall
 set noautoread
 set ffs=unix,dos,mac
 set enc=utf-8
+set spelllang=en,hr
 
 set foldmethod=indent
 set foldlevel=99
