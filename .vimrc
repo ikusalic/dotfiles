@@ -234,8 +234,8 @@ endfunction
 
 function! InitializeLanguageSpecificSettings()
     " Markdown
-    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=
-    autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=78
+    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=my_markdown
+    autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=79
 
     " bash with vi input mode
     autocmd BufRead,BufNewFile bash-fc-* set filetype=sh
@@ -258,6 +258,13 @@ function! InitializeLanguageSpecificSettings()
 
     " CSS
     autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+
+    " writing
+    augroup pencil
+        autocmd!
+        autocmd FileType my_markdown call pencil#init()
+        autocmd FileType text call pencil#init()
+    augroup END
 endfunction
 
 function! InitializePlugins()
@@ -316,6 +323,7 @@ function! InitializePlugins()
     " FIXME problems with Ruby
     call ExecUnixWin("let g:tagbar_ctags_bin = '/usr/local/bin/ctags'", "let g:tagbar_ctags_bin = 'C:/ctags58/ctags.exe'")
     let g:tagbar_left = 1
+    " TODO scala, clojure
 
     Bundle 'ikusalic/vim-rainbow'
 
@@ -348,7 +356,11 @@ function! InitializePlugins()
     endif
 
     Bundle 'terryma/vim-multiple-cursors'
-    let g:multi_cursor_start_key='<C-A>'
+    let g:multi_cursor_start_key = '<C-A>'
+    let g:multi_cursor_next_key = '<C-n>'
+    let g:multi_cursor_prev_key = '<C-p>'
+    let g:multi_cursor_skip_key = '<C-x>'
+    let g:multi_cursor_quit_key = '<Esc>'
 
     " NOTE install ack: `apt-get install ack-grep` or `brew install ack`
     Bundle 'mileszs/ack.vim'
@@ -366,6 +378,8 @@ function! InitializePlugins()
 
     Bundle 'mikewest/vimroom'
     Bundle 'reedes/vim-wheel'
+    Bundle 'reedes/vim-pencil'
+    let g:pencil#wrapModeDefault = 'hard'
 
     "Bundle 'tpope/vim-surround'  # TODO
 
@@ -396,9 +410,6 @@ function! InitializePlugins()
     "         - check:
     "             - https://github.com/Valloric/YouCompleteMe/issues/8
     "             - https://github.com/Valloric/YouCompleteMe/issues/18
-
-    "Bundle 'dansomething/vim-eclim'  # TODO
-    "let g:EclimCompletionMethod = 'omnifunc'
 
     "http://www.vim.org/scripts/script.php?script_id=39 matchit
     "http://www.vim.org/scripts/script.php?script_id=386 py matchit
@@ -474,6 +485,7 @@ function! InitializePluginMappings()
     nmap <C-A> :call multiple_cursors#new("n")<CR>
 
     map <leader>aa :Ack
+    "map <leader>ar :! ack -l 'pattern' | xargs perl -pi -E 's/pattern/replacement/g'  # TODO
 
     map <leader>zw :ZoomWin<CR>
 
@@ -483,16 +495,12 @@ function! InitializePluginMappings()
 
     map <leader>ct :UpdateTags -R .<CR>
 
-    "map <leader>ec :ProjectCreate  -n ruby<left><left><left><left><left><left><left><left>  # TODO
-    "map <leader>ek :ShutdownEclim<CR>
-    "" show errors for Eclim
-    "map <leader>ll :lli<CR>
-    "map <leader>ln :lnext<CR>
-    "map <leader>lp :lprevious<CR>
     map <leader>vr :VimroomToggle<CR>
 
     map <C-J> :call wheel#VScroll(0, '')<CR>
     map <C-K> :call wheel#VScroll(1, '')<CR>
+
+    nnoremap <leader>pt :TogglePencil<CR>
 endfunction
 
 
