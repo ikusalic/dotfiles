@@ -14,9 +14,12 @@
     lineNumber = true
 [alias]
     a = add -u :/
-    bav = branch -av
+    aa = add .
+    aaa = !git add -u :/ && git add .
+    bav = !git branch -av && echo "tags:" && git tag
     c = commit
     ca = commit -a --amend
+    cl = clean -i
     cm = commit -am
     co = checkout
     d = diff
@@ -26,28 +29,33 @@
     ds1 = show --stat HEAD
     dw = diff --color-words
     fap = fetch --all --prune
-    fbs = !git fetch --all --prune && git fetch --tags && git branch -av && git log -1 && echo && git status
+    fbs = !git fetch --all --prune && git fetch --tags && git branch -av && echo "tags:" && git tag | tail && echo && git log -1 && echo && git status
     g =  grep -n
     gt =  grep -n -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
     h = rev-parse HEAD
     l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' -5
+    l1 = log -1
     lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)'
-    ll = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all -5
     lga = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all
+    ll = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all -5
     ma = merge --abort
     p = push
     po = push origin
     pom = push origin master
     pomf = push origin +master
-    purr = pull --rebase
+    purr = !git stash && git pull --rebase && git stash pop
     r = rebase
     ra = rebase --abort
     rc = rebase --continue
+    ri = rebase -i
     ri7 = rebase -i HEAD~7
     rem = remote -v
     rom = rebase origin/master
     s = status
     tmp = remote add tmp git@github.com:ikusalic/tmp.git
+    uf = reset HEAD --
+    wf = checkout --
+    wfa = !git status --porcelain | grep -E "^.M" | awk '{ print $2 }' | xargs git checkout --
     wipe = reset --hard HEAD
 [help]
     autocorrect = 1
