@@ -53,7 +53,8 @@ shopt -s histappend
 shopt -s hostcomplete
 
 alias g="grep -v grep | grep -i"
-alias a="awk"
+alias a="ack"
+alias as="ack --scala"
 alias w="watch -n 0.5"
 alias l="ls -ahl"
 alias ll="ls -ahl"
@@ -62,6 +63,7 @@ alias lt="ls -hlrt"
 alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
 alias tarc="tar -cvzf"
 alias tard="tar -xvzf"
+alias tg="tree -f | grep -i"
 
 
 ##### OS SPECIFIC SETTINGS #####
@@ -91,6 +93,7 @@ alias be="bundle exec"
 alias rg_use="rvm gemset use"
 alias rg_list="rvm gemset list"
 
+alias cr="$HOME/other/source/devaut/src/main/bash/checkrepo"
 
 ##### HOST SPECIFIC SETTINGS #####
 # use .hostrc for additional customization
