@@ -55,15 +55,16 @@ shopt -s hostcomplete
 alias g="grep -v grep | grep -i"
 alias a="ack"
 alias as="ack --scala"
-alias w="watch -n 0.5"
+alias d="diff -y --suppress-common-lines"
 alias l="ls -ahl"
 alias ll="ls -ahl"
 alias ls="ls -FGh"
-alias lt="ls -hlrt"
 alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
+alias lt="ls -hlrt"
 alias tarc="tar -cvzf"
 alias tard="tar -xvzf"
 alias tg="tree -f | grep -i"
+alias w="watch -n 0.5"
 
 
 ##### OS SPECIFIC SETTINGS #####
@@ -93,7 +94,11 @@ alias be="bundle exec"
 alias rg_use="rvm gemset use"
 alias rg_list="rvm gemset list"
 
+alias sbtsrcrm='rm -r .idea_modules/ ; sbt "update-classifiers" && sbt "update-sbt-classifiers" && sbt "gen-idea sbt-classifiers"'
+
 alias cr="$HOME/other/source/devaut/src/main/bash/checkrepo"
+
+alias brewup="brew update && brew upgrade"
 
 ##### HOST SPECIFIC SETTINGS #####
 # use .hostrc for additional customization
