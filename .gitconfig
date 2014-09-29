@@ -52,6 +52,8 @@
     rem = remote -v
     rom = rebase origin/master
     s = status
+    sp = stash pop
+    sh = "!show_with_stats() { !( git show "$1" --stat --color && git show "$1" --format=format: --color ) | less -r; }; show_with_stats"
     tmp = remote add tmp git@github.com:ikusalic/tmp.git
     uf = reset HEAD --
     wf = checkout --
