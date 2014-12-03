@@ -54,6 +54,7 @@ shopt -s hostcomplete
 
 alias g="grep -v grep | grep -i"
 alias a="ack"
+alias af="ack --files-with-matches"
 alias as="ack --scala"
 alias d="diff -y --suppress-common-lines"
 alias l="ls -ahl"
@@ -61,9 +62,10 @@ alias ll="ls -ahl"
 alias ls="ls -FGh"
 alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
 alias lt="ls -hlrt"
+alias t="tree -C --matchdirs -I target"
 alias tarc="tar -cvzf"
 alias tard="tar -xvzf"
-alias tg="tree -f | grep -i"
+alias tg="tree -C --matchdirs -I target -f | grep -i"
 alias w="watch -n 0.5"
 
 
@@ -76,6 +78,7 @@ then  # MAC OS X
     export PATH="/usr/local/bin:$PATH"  # for homebrew
     export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH"
     export PATH=$PATH:$HOME/.rvm/bin  # Add RVM to PATH for scripting
+    export PATH=$PATH:/usr/texbin  # for pdflatex
 
     [[ -s "$(brew --prefix)/etc/bash_completion" ]] && source "$(brew --prefix)/etc/bash_completion"
 
@@ -94,9 +97,9 @@ alias be="bundle exec"
 alias rg_use="rvm gemset use"
 alias rg_list="rvm gemset list"
 
-alias sbtsrcrm='rm -r .idea_modules/ ; sbt "update-classifiers" && sbt "update-sbt-classifiers" && sbt "gen-idea sbt-classifiers"'
-
 alias cr="$HOME/other/source/devaut/src/main/bash/checkrepo"
+alias push="$HOME/other/source/devaut/src/main/bash/push --dry-run"
+alias eachrepo="$HOME/other/source/devaut/src/main/bash/eachrepo"
 
 alias brewup="brew update && brew upgrade"
 
