@@ -23,7 +23,7 @@
     cm = commit -am
     co = checkout
     d = diff
-    d1 = show HEAD
+    d1 = "!show_with_stats() { !( git show "$1" --stat --color && git show "$1" --format=format: --color ) | less -r; }; show_with_stats" HEAD
     dc = diff --cached
     ds = diff --stat
     ds1 = show --stat HEAD
@@ -38,12 +38,15 @@
     l1 = log -1
     lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)'
     lga = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all
+    lgag = !git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all | grep
+    lgg = !git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' | grep
     ll = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' --all -5
     ma = merge --abort
     p = push
     po = push origin
     pom = push origin master
     pomf = push origin +master
+    ptf = push tmp +master
     purr = !git stash && git pull --rebase && git stash pop || true
     r = rebase
     r1 = reset HEAD~1
@@ -54,6 +57,7 @@
     rem = remote -v
     rom = rebase origin/master
     s = status
+    sl = stash list
     sp = stash pop
     sh = "!show_with_stats() { !( git show "$1" --stat --color && git show "$1" --format=format: --color ) | less -r; }; show_with_stats"
     tmp = remote add tmp git@github.com:ikusalic/tmp.git
