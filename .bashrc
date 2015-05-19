@@ -42,8 +42,8 @@ export EDITOR=vim
 export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoredups:ignorespace
 export HISTIGNORE="pwd:ls:dir:ls -al:ls -l:h:history"
-export HISTFILESIZE=100000
-export HISTSIZE=100000
+export HISTFILESIZE=1000000
+export HISTSIZE=1000000
 export HISTCONTROL=ignoredups:ignorespace
 export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S> "
 
@@ -55,7 +55,7 @@ shopt -s hostcomplete
 alias g="grep -v grep | grep -i"
 alias a="ack"
 alias af="ack --files-with-matches"
-alias as="ack --ignore-dir='target' --ignore-dir='.idea'"
+alias as="ack --scala --ignore-dir='target' --ignore-dir='.idea'"
 alias ap="ack --python"
 alias ar="ack --ruby"
 alias d="diff -y --suppress-common-lines"
@@ -68,6 +68,7 @@ alias lt="ls -hlrt"
 alias t="tree -C --matchdirs -I target"
 alias tarc="tar -cvzf"
 alias tard="tar -xvzf"
+alias tf="tree -C -f"
 alias tg="tree -C --matchdirs -I target -f | grep -i"
 alias w="watch -n 0.5"
 
