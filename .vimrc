@@ -162,6 +162,7 @@ function! InitializeMappings()
     " remove current buffer
     map <leader>br :bw<CR>
     map <leader>bw :bw!<CR>
+    map <leader>sw :w <BAR> bw!<CR>
 
     " new buffer
     map <leader>ee :enew<CR>
@@ -234,7 +235,7 @@ endfunction
 
 function! InitializeLanguageSpecificSettings()
     " Markdown
-    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=my_markdown
+    autocmd BufRead,BufNewFile *.md,*.markdown set filetype=markdown
     autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=79
 
     " bash with vi input mode
@@ -251,20 +252,13 @@ function! InitializeLanguageSpecificSettings()
     autocmd FileType python set omnifunc=pythoncomplete#Complete
 
     " Scala
-    autocmd FileType scala setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
+    autocmd FileType scala setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
     " HTML
     autocmd FileType xhtml,html setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 
     " CSS
     autocmd FileType css,scss setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
-
-    " writing
-    augroup pencil
-        autocmd!
-        autocmd FileType my_markdown call pencil#init()
-        autocmd FileType text call pencil#init()
-    augroup END
 endfunction
 
 function! InitializePlugins()
@@ -273,9 +267,9 @@ function! InitializePlugins()
     "     (ii.) :BundleInstall
     set nocompatible
     filetype off
-    set rtp+=~/.vim/bundle/vundle/
+    set rtp+=~/.vim/bundle/Vundle.vim/
     call vundle#rc()
-    Bundle 'gmarik/vundle'
+    Bundle 'gmarik/Vundle.vim'
 
     Bundle 'davidbeckingsale/Smyck-Color-Scheme'
     Bundle 'Lokaltog/vim-distinguished'
@@ -284,9 +278,10 @@ function! InitializePlugins()
     let g:NERDTreeIgnore = ['\.pyc$']
 
     Bundle 'mru.vim'
-    let g:MRU_Max_Entries = 1000
+    let g:MRU_Max_Entries = 10000
     let g:MRU_Window_Height = 15
     let g:MRU_Add_Menu = 0
+    let g:MRU_Exclude_Files = '^.*__Geeknote.*'
 
     Bundle 'LustyJuggler'
 
@@ -341,9 +336,7 @@ function! InitializePlugins()
     "     - for different languages (must be on path):
     "          - python: flake8 python package
     let g:syntastic_auto_loc_list = 1
-
-    Bundle 'airblade/vim-gitgutter'
-    let g:gitgutter_enabled = 0
+    let g:syntastic_python_flake8_args = "--ignore=E501"
 
     Bundle 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_guide_size = 1
@@ -377,9 +370,11 @@ function! InitializePlugins()
     let g:easytags_updatetime_warn = 0
 
     Bundle 'mikewest/vimroom'
+    let g:vimroom_sidebar_height = 1
+    let g:vimroom_width = 85
+    let g:vimroom_scrolloff = 3
+
     Bundle 'reedes/vim-wheel'
-    Bundle 'reedes/vim-pencil'
-    let g:pencil#wrapModeDefault = 'hard'
 
     "Bundle 'tpope/vim-surround'  # TODO
 
@@ -414,6 +409,17 @@ function! InitializePlugins()
     "http://www.vim.org/scripts/script.php?script_id=39 matchit
     "http://www.vim.org/scripts/script.php?script_id=386 py matchit
     "http://www.vim.org/scripts/script.php?script_id=290 rb matchit
+
+    Bundle 'neilagabriel/vim-geeknote'
+    " NOTE vim-geeknote instalation
+    "     git clone git://github.com/VitaliyRodnenko/geeknote.git /tmp/geeknote
+    "     cd /tmp/geeknote
+    "     sudo python setup.py install
+    "
+    "     geeknote login
+    let g:GeeknoteExplorerWidth=45
+    autocmd FileType geeknote setlocal nornu
+    autocmd FileType geeknote setlocal nonu
 
     filetype plugin indent on
 
@@ -477,8 +483,6 @@ function! InitializePluginMappings()
 
     map <leader>st :let g:syntastic_auto_loc_list = (g:syntastic_auto_loc_list == 1) ? 2 : 1 <BAR> :lcl <BAR> :SyntasticCheck<CR>
 
-    map <leader>gg :GitGutterToggle<CR>
-
     map <leader>ig :IndentGuidesToggle<CR>
 
     xmap <C-A> :<C-U>call multiple_cursors#new("v")<CR>
@@ -495,12 +499,14 @@ function! InitializePluginMappings()
 
     map <leader>ct :UpdateTags -R .<CR>
 
-    map <leader>vr :VimroomToggle<CR>
+    map <leader>vr :VimroomToggle<CR>:set number<CR>
 
     map <C-J> :call wheel#VScroll(0, '')<CR>
     map <C-K> :call wheel#VScroll(1, '')<CR>
 
-    nnoremap <leader>pt :TogglePencil<CR>
+    noremap <leader>et :Geeknote<CR>
+    noremap <leader>ec :GeeknoteCreateNote
+    " TODO deleting notes
 endfunction
 
 
@@ -561,7 +567,7 @@ set noautowriteall
 set noautoread
 set ffs=unix,dos,mac
 set enc=utf-8
-set spelllang=en,hr
+set spelllang=en,hr,de
 
 set foldmethod=indent
 set foldlevel=99
