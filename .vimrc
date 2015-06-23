@@ -389,7 +389,7 @@ function! InitializePlugins()
 
     Bundle 'pythoncomplete'
 
-    Bundle 'scala/scala-dist', {'rtp':  'tool-support/src/vim'}
+    Bundle 'scala/scala-tool-support', {'rtp': 'tool-support/vim'}
 
     Bundle 'tpope/vim-markdown'
 
