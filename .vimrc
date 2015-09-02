@@ -281,7 +281,6 @@ function! InitializePlugins()
     let g:MRU_Max_Entries = 10000
     let g:MRU_Window_Height = 15
     let g:MRU_Add_Menu = 0
-    let g:MRU_Exclude_Files = '^.*__Geeknote.*'
 
     Bundle 'LustyJuggler'
 
@@ -389,6 +388,8 @@ function! InitializePlugins()
 
     Bundle 'pythoncomplete'
 
+    Bundle 'fatih/vim-go'
+
     Bundle 'scala/scala-tool-support', {'rtp': 'tool-support/vim'}
 
     Bundle 'tpope/vim-markdown'
@@ -410,16 +411,8 @@ function! InitializePlugins()
     "http://www.vim.org/scripts/script.php?script_id=386 py matchit
     "http://www.vim.org/scripts/script.php?script_id=290 rb matchit
 
-    Bundle 'neilagabriel/vim-geeknote'
-    " NOTE vim-geeknote instalation
-    "     git clone git://github.com/VitaliyRodnenko/geeknote.git /tmp/geeknote
-    "     cd /tmp/geeknote
-    "     sudo python setup.py install
-    "
-    "     geeknote login
-    let g:GeeknoteExplorerWidth=45
-    autocmd FileType geeknote setlocal nornu
-    autocmd FileType geeknote setlocal nonu
+    "Bundle 'airblade/vim-gitgutter'
+    "let g:gitgutter_enabled = 0
 
     filetype plugin indent on
 
@@ -504,9 +497,7 @@ function! InitializePluginMappings()
     map <C-J> :call wheel#VScroll(0, '')<CR>
     map <C-K> :call wheel#VScroll(1, '')<CR>
 
-    noremap <leader>et :Geeknote<CR>
-    noremap <leader>ec :GeeknoteCreateNote
-    " TODO deleting notes
+    "map <leader>gg :GitGutterToggle<CR> TODO not working
 endfunction
 
 
