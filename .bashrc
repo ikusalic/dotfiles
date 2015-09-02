@@ -54,8 +54,12 @@ shopt -s hostcomplete
 
 alias g="grep -v grep | grep -i"
 alias a="ack"
+alias ai="ack -i"
 alias af="ack --files-with-matches"
+alias aj="ack --scala --java --ignore-dir='target' --ignore-dir='.idea'"
+alias aji="ack --scala --java --ignore-dir='target' --ignore-dir='.idea' --ignore-dir='test'"
 alias as="ack --scala --ignore-dir='target' --ignore-dir='.idea'"
+alias asi="ack --scala --ignore-dir='target' --ignore-dir='.idea' --ignore-dir='test'"
 alias ap="ack --python"
 alias ar="ack --ruby"
 alias d="diff -y --suppress-common-lines"
