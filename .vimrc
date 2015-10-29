@@ -224,7 +224,7 @@ function! InitializeMappings()
     map <leader>sb :bufdo %s//gce<Left><Left><Left><Left>
 
     " list some tags I like to use -> small TaskList
-    map <leader>tg :il! /\<TODO\>\\|\<FIXME\>\\|\<XXX\>\\|\<NOTE\>\\|\<BUG\>\\|\<HACK\>\\|\<TODEL\>\\|\<OPTIMIZE\>\\|\<DEBUG\>/<CR>
+    map <leader>tg :il! /\<TODO\>\\|\<FIXME\>\\|\<XXX\>\\|\<NOTE\>\\|\<BUG\>\\|\<HACK\>\\|\<TODEL\>\\|\<OPTIMIZE\>\\|\<WIP\>\\|\<DONE\>\\|\<DEBUG\>/<CR>
 
     " format xml, *nix only
     call ExecUnixWin("map <leader>fx :%!xmllint --format -<CR>", '')
@@ -397,12 +397,11 @@ function! InitializePlugins()
     Bundle 'Valloric/YouCompleteMe'
     " NOTE YouCompleteMe install
     "     cd ~/.vim/bundle/YouCompleteMe
-    "     ./install.sh  # or ./install.sh --clang-completer (semantic support for C family)
+    "     ./install.sh --clang-completer
     "
     "     - if vim is crashing (Vim: Caught deadly signal ABRT):
     "         - linked lib: `otool -L /Applications/MacVim.app/Contents/MacOS/Vim | grep Python`
     "         - `install_name_tool -change <path-to-linked-lib <path-to-new-lib> /Applications/MacVim.app/Contents/MacOS/Vim`
-    "             - <path-to-new-lib>: /usr/local/Cellar/python/2.7.6/Frameworks/Python.framework/Versions/2.7/Python
     "         - check:
     "             - https://github.com/Valloric/YouCompleteMe/issues/8
     "             - https://github.com/Valloric/YouCompleteMe/issues/18
@@ -593,7 +592,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " highlight more Todo keywords
 augroup HiglightTODO
     autocmd!
-    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', '\<TODO\>\|\<FIXME\>\|\<XXX\>\|\<NOTE\>\|\<BUG\>\|\<HACK\>\|\<TODEL\>\|\<OPTIMIZE\>\|\<DEBUG\>')
+    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', '\<TODO\>\|\<FIXME\>\|\<XXX\>\|\<NOTE\>\|\<BUG\>\|\<HACK\>\|\<TODEL\>\|\<OPTIMIZE\>\|\<WIP\>\|\<DONE\>\|\<DEBUG\>')
 augroup END
 
 call InitializeLanguageSpecificSettings()
