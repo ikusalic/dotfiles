@@ -57,9 +57,10 @@
     rem = remote -v
     rom = rebase origin/master
     s = status
+    sh = "!show_with_stats() { !( git show "$1" --stat --color && git show "$1" --format=format: --color ) | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init; }; show_with_stats"
     sl = stash list
     sp = stash pop
-    sh = "!show_with_stats() { !( git show "$1" --stat --color && git show "$1" --format=format: --color ) | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init; }; show_with_stats"
+    st = stash
     shg = "!commit_list=$( git log --format=format:'%h %s' | grep "$1" | cut -d' ' -f 1 | gtac ); !( for commit in $commit_list; do !( git show "$commit" --stat --color && git show "$commit" --format=format: --color ) | less --RAW-CONTROL-CHARS --no-init; done ); true"
     tmp = remote add tmp git@github.com:ikusalic/tmp.git
     uf = reset HEAD --
