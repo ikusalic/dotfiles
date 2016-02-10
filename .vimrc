@@ -373,6 +373,12 @@ function! InitializePlugins()
     let g:vimroom_width = 85
     let g:vimroom_scrolloff = 3
 
+    Bundle '907th/vim-auto-save'
+    let g:auto_save = 1
+    let g:auto_save_in_insert_mode = 0
+    let g:auto_save_events = ["InsertLeave", "TextChanged"]
+    let g:auto_save_silent = 1
+
     Bundle 'reedes/vim-wheel'
 
     "Bundle 'tpope/vim-surround'  # TODO
@@ -492,6 +498,8 @@ function! InitializePluginMappings()
     map <leader>ct :UpdateTags -R .<CR>
 
     map <leader>vr :VimroomToggle<CR>:set number<CR>
+
+    map <leader>as :AutoSaveToggle<CR>
 
     map <C-J> :call wheel#VScroll(0, '')<CR>
     map <C-K> :call wheel#VScroll(1, '')<CR>
