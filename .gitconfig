@@ -16,6 +16,7 @@
     a = add -u :/
     aa = add .
     aaa = !git add -u :/ && git add .
+    ap = add -p
     bav = !git branch -av && echo "tags:" && git tag
     c = commit
     ca = commit -a --amend
@@ -27,11 +28,16 @@
     dc = diff --cached
     ds = diff --stat
     ds1 = show --stat HEAD
+    dt = difftool
     dw = diff --color-words
     fap = fetch --all --prune
     fbs = !git fetch --all --prune && git fetch --tags && git branch -av && echo "tags:" && git tag | tail && echo && git log -1 && echo && git status
     fall = !git fetch --all --prune && git fetch --tags && git branch -av && echo "tags:" && git tag | tail && echo && git log -1 && echo && git status && git stash && git pull --rebase && git stash pop || true
     g =  grep -n
+    g1 = reset HEAD~
+    gf1 = reset --hard HEAD~
+    godown = !git tag move-mark && git reset --hard @~
+    goup = !git reset --hard move-mark && git tag -d move-mark
     gt =  grep -n -E 'TODO|FIXME|XXX|NOTE|BUG|HACK|TODEL|OPTIMIZE|DEBUG'
     h = rev-parse HEAD
     l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) [%an%C(reset)] %C(white)%s%C(reset) %C(dim white)%C(bold yellow)%d%C(reset)' -5
