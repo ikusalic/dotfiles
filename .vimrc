@@ -238,6 +238,8 @@ function! InitializeLanguageSpecificSettings()
     autocmd BufRead,BufNewFile *.md,*.markdown set filetype=markdown
     autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=79
 
+    " regular bash
+    autocmd BufRead,BufNewFile *.sh let g:auto_save = 0
     " bash with vi input mode
     autocmd BufRead,BufNewFile bash-fc-* set filetype=sh
 
