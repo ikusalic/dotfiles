@@ -47,23 +47,24 @@ export HISTSIZE=1000000
 export HISTCONTROL=ignoredups:ignorespace
 export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S> "
 
+
 shopt -s checkwinsize
 shopt -s extglob
 shopt -s histappend
 shopt -s hostcomplete
 
-alias g="grep -v grep | grep -i"
 alias a="ack"
 alias ai="ack -i"
 alias af="ack --files-with-matches"
 alias aj="ack --scala --java --ignore-dir='target' --ignore-dir='.idea'"
-alias aji="ack --scala --java --ignore-dir='target' --ignore-dir='.idea' --ignore-dir='test'"
+alias ajt="ack --scala --java --ignore-dir='target' --ignore-dir='.idea' --ignore-dir='test'"
 alias as="ack --scala --ignore-dir='target' --ignore-dir='.idea'"
-alias asi="ack --scala --ignore-dir='target' --ignore-dir='.idea' --ignore-dir='test'"
+alias ast="ack --scala --ignore-dir='target' --ignore-dir='.idea' --ignore-dir='test'"
 alias ap="ack --python"
 alias ar="ack --ruby"
-alias ari="ack --ruby --ignore-dir='spec'"
+alias art="ack --ruby --ignore-dir='spec'"
 alias d="diff -y --suppress-common-lines"
+alias g="grep -v grep | grep -i"
 alias l="ls -ahl"
 alias ll="ls -ahl"
 alias lr="less -r"
@@ -72,10 +73,11 @@ alias lsd="find . -type d -maxdepth 1 -exec basename {} \;"
 alias lt="ls -hlrt"
 alias pg="ps -ef | grep"
 alias t="tree -C --matchdirs -I target"
-alias t2="tree -C -L 2"
+alias t2="tree -C --matchdirs -I target -f -L 2"
 alias tarc="tar -cvzf"
 alias tard="tar -xvzf"
 alias tf="tree -C --matchdirs -I target -f"
+alias tfg="tree -C --matchdirs -I target -f | grep -i"
 alias tg="tree -C --matchdirs -I target -f | grep -i"
 alias w="watch -n 0.5"
 
@@ -90,6 +92,7 @@ then  # MAC OS X
     export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH"
     export PATH=$PATH:$HOME/.rvm/bin  # Add RVM to PATH for scripting
     export PATH=$PATH:/usr/texbin  # for pdflatex
+    export HOMEBREW_NO_ANALYTICS=1
 
     [[ -s "$(brew --prefix)/etc/bash_completion" ]] && source "$(brew --prefix)/etc/bash_completion"
 
@@ -113,6 +116,10 @@ alias push="$HOME/other/source/devaut/src/main/bash/push --dry-run"
 alias eachrepo="$HOME/other/source/devaut/src/main/bash/eachrepo"
 
 alias brewup="brew update && brew upgrade"
+
+if [ -x /usr/local/bin/cowsay -a -x /usr/local/bin/fortune ]; then
+ fortune | cowsay
+fi
 
 ##### HOST SPECIFIC SETTINGS #####
 # use .hostrc for additional customization
