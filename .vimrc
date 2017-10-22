@@ -179,6 +179,10 @@ function! InitializeMappings()
     " toggle wrap
     map <leader>wr :setlocal wrap!<CR>
 
+    " line length
+    map <leader>ln :setlocal textwidth=79<CR>
+    map <leader>lf :setlocal textwidth=1000<CR>
+
     " toggle show unprintable characters
     nmap <leader>li :set list!<CR>
 
@@ -217,6 +221,9 @@ function! InitializeMappings()
     nnoremap <leader>> :call PreservePositionExec('%s/^\s*/&&/')<CR>
     " halve the number of whitespaces at the beginning of each line
     nnoremap <leader><LT> :call PreservePositionExec('%s/\(^\s*\)\1/\1/')<CR>
+
+    " join lines in a paragraph
+    nmap <leader>fp vipJ0
 
     " custom search across all buffers
     map <leader>/b :bufdo il! //<Left>
