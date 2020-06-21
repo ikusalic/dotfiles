@@ -3,7 +3,7 @@
     email = ivan@ikusalic.com
 [core]
     excludesfile = ~/.gitignore_global
-    editor = /Applications/MacVim.app/Contents/MacOS/Vim
+    editor = /usr/bin/vim
 [github]
     user = ikusalic
 [color]

@@ -16,6 +16,7 @@ function set_bash_prompt {
         local status_indicator="$red \$ $color_off"
     fi
 
+    source ~/.git-prompt.sh
     local git_branch=$(__git_ps1 "%s")
     if [ -n "$git_branch" ]; then
         git diff --quiet HEAD &>/dev/null
@@ -31,6 +32,9 @@ function set_bash_prompt {
 
     export PS1="$PS_CUSTOM_PREFIX[\t] $light_green[\u \w$color_off$git_result$light_green]$status_indicator"
 }
+
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 export PROMPT_COMMAND=set_bash_prompt
 
 export CLICOLOR=1
@@ -81,46 +85,9 @@ alias tfg="tree -C --matchdirs -I target -f | grep -i"
 alias tg="tree -C --matchdirs -I target -f | grep -i"
 alias w="watch -n 0.5"
 
-
-##### OS SPECIFIC SETTINGS #####
-if [[ "$OSTYPE" == "darwin"* ]]
-then  # MAC OS X
-    alias nosleep="pmset noidle"
-    alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
-
-    export PATH="/usr/local/bin:$PATH"  # for homebrew
-    export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH"
-    export PATH=$PATH:$HOME/.rvm/bin  # Add RVM to PATH for scripting
-    export PATH=$PATH:/usr/texbin  # for pdflatex
-    export HOMEBREW_NO_ANALYTICS=1
-
-    [[ -s "$(brew --prefix)/etc/bash_completion" ]] && source "$(brew --prefix)/etc/bash_completion"
-
-    [[ -s "$HOME/.git-prompt.sh" ]] && source "$HOME/.git-prompt.sh"
-elif [[ "$OSTYPE" == "linux-gnu" ]]
-then  # LINUX
-    [[ -s /etc/bash_completion ]] && source /etc/bash_completion
-fi
-
-
-##### LANGUAGE SPECIFIC SETTINGS #####
-[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-alias be="bundle exec"
-alias rg_use="rvm gemset use"
-alias rg_list="rvm gemset list"
-
-alias cr="$HOME/other/source/devaut/src/main/bash/checkrepo"
-alias push="$HOME/other/source/devaut/src/main/bash/push --dry-run"
-alias eachrepo="$HOME/other/source/devaut/src/main/bash/eachrepo"
-
-alias brewup="brew update && brew upgrade"
-
-if [ -x /usr/local/bin/cowsay -a -x /usr/local/bin/fortune ]; then
- fortune | cowsay
-fi
+alias nosleep="pmset noidle"
+#alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 
 ##### HOST SPECIFIC SETTINGS #####
 # use .hostrc for additional customization
-[[ -s $HOME/.hostrc ]] && source $HOME/.hostrc
+[[ -s $HOME/.hostrc ]] && source $HOME/.hostrc || true
