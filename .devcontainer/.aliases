@@ -1,0 +1,7 @@
+alias CC='claude --dangerously-skip-permissions'
+alias l="ls -ahl"
+alias t="tree -C -I target"
+alias tf="tree -C -I target -f"
+alias t2="tree -C -I target -f -L 2"
+alias tg="tree -C -I target -f | grep -i"
+

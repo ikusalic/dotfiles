@@ -1,0 +1,13 @@
+set editing-mode vi
+set show-all-if-ambiguous on
+set completion-ignore-case on
+
+set keymap vi-command
+"gg": beginning-of-history
+"G": end-of-history
+set keymap vi-insert
+"jj": vi-movement-mode
+
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\C-l": clear-screen
